@@ -1,0 +1,50 @@
+<ion-view hide-back-button="true" view-title="Promocion">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon button-clear icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class=" card-background-page" >
+    <div class='text-center' ng-show="isLoading">
+      <ion-spinner icon="spiral" class="spiral-spiner"></ion-spinner>
+      Cargando lista de promociones...
+    </div>
+    <ion-refresher
+    pulling-text="Arrastrar para actualizar..."
+    on-refresh="loadEvent(true)"
+    spinner='none'>
+  </ion-refresher>
+  <!-- Promociones -->
+  <div ng-if="list_promociones !== undefined && !list_promociones.length" class=" white-c padding  text-center">
+    <div class="padding no-results">
+      <i class="icon ion-alert"></i> No se encontraron promociones
+    </div>
+  </div>
+  <!-- inicio de los ion card de opromociones  -->
+  <ion-card class='list card  ' ng-repeat='promo in list_promociones'>
+    <div  class="item item-image" ng-repeat='(key,value) in promo.imagen'>
+      <div ng-bind-html='value'>
+      </div>
+    </div>
+    <div class="no-padding title-promo bold">
+      <p class="white-c" ng-bind-html='promo.title'>
+      </p>
+      <!-- <p ng-bind-html='promo.Cuerpo'></p> -->
+    </div>
+    <div class="card-tipo-promo">
+      {{promo.tipo_promo_titulo}}
+    </div>
+    <div class="item tabs  stable-bg tabs-icon-left">
+      <a class="tab-item stable-bg positive black-c" >
+        <i class="icon ion-clock icon-left"></i>
+        1 minuto
+      </a>
+      <a class="tab-item stable-bg assertive" >
+        <i class="icon ion-heart icon-right"></i>
+      </a>
+      <a class="tab-item stable-bg positive-900"  ng-controller='PromoCtrl' ng-click='onShare(promo)'>
+        <i class="icon ion-android-share-alt icon-right"></i>
+      </a>
+    </div>
+  </div>
+</ion-card>
+</ion-content>
+</ion-view>

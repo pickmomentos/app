@@ -1,0 +1,32 @@
+<ion-modal-view class="places-modal">
+  <ion-header-bar>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closePlacesModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+    <h1 class="title">{{ "placesTitle" | translate }}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item class="item item-thumbnail-left item-button-right {{ theme }}"
+      ng-repeat="place in places" ng-click="onPlaceClicked(place)" bindonce>
+      <img class="animated fadeIn new-img" ng-src="main/assets/images/placeholder.png"
+      actual-src="{{ place.imagen[0]}}">
+      <!-- <h2 bo-bnd="$index + 1 + '. ' + place.titulo"></h2> -->
+      <h3 bo-bind="place.titulo" class="sin-espacio"></h3>
+      <small bo-text="place.direccion" style="font-size:80%"></small>
+        <rating  ng-model="place.rating[0].valor" max="maxRating">
+        </rating>
+        <small>
+          {{place.especialidad[0]}}
+        </small>
+        <button class="button button-clear">
+          <span class="item-note {{ theme }}" >
+            {{place.d}}
+          </span>
+        </button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,14 @@
+# more info here - http://eslint.org/docs/user-guide/configuring.html#ignoring-files-and-directories
+
+# node_modules ignored by default
+
+# ignore bower_components
+app/bower_components
+app/main/utils/jdrupal.js
+app/main/utils/common.js
+app/main/controllers/PreferencesCtrl.js
+app/main/main.js
+app/main/controllers/PlaceListController.js
+app/main/controllers/MenuController.js
+app/main/services/ParseFileService.js
+app/main/controllers/ScanController.js

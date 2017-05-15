@@ -1,0 +1,252 @@
+//pick Theme
+// Colors
+// -------------------------------
+$pick: #e74c3c !default;
+$pick-dark: darken($pick, 30%);
+
+// Buttons
+// -------------------------------
+$button-pick-bg: $pick !default;
+$button-pick-text: #fff !default;
+$button-pick-border: $pick !default;
+$button-pick-active-bg: darken($pick, 20%) !default;
+$button-pick-active-border: darken($pick, 20%) !default;
+
+// Bars
+// -------------------------------
+$bar-pick-bg: rgba($button-pick-bg, $bar-transparency) !default;
+$bar-pick-text: $button-pick-text !default;
+$bar-pick-border: $button-pick-border !default;
+$bar-pick-active-bg: $button-pick-active-bg !default;
+$bar-pick-active-border: $button-pick-active-border !default;
+
+// Spinners
+// -------------------------------
+
+$spinner-pick-stroke: $pick !default;
+$spinner-pick-fill: $pick !default;
+
+// Tabs
+// -------------------------------
+$tabs-pick-bg: $button-pick-bg !default;
+$tabs-pick-border: $button-pick-border !default;
+$tabs-pick-text: $button-pick-text !default;
+$tabs-striped-off-color: #000;
+$tabs-striped-off-opacity: .4;
+$tabs-striped-border-width: 4px;
+
+// Items
+// -------------------------------
+$item-pick-bg: $button-pick-bg !default;
+$item-pick-border: $button-pick-border !default;
+$item-pick-text: $button-pick-text !default;
+$item-pick-active-bg: $button-pick-active-bg !default;
+$item-pick-active-border: $button-pick-active-border !default;
+
+// Toggle
+// -------------------------------
+$toggle-on-pick-bg: $button-pick-border !default;
+$toggle-on-pick-border: $toggle-on-pick-bg !default;
+$toggle-on-stable-bg: $button-stable-border !default;
+
+// Checkbox
+// -------------------------------
+$checkbox-off-border-pick: $button-pick-border !default;
+$checkbox-on-bg-pick: $button-pick-border !default;
+
+// Range
+// -------------------------------
+$range-pick-track-bg: $button-pick-border !default;
+
+// Badges
+// -------------------------------
+$badge-pick-bg: $button-pick-bg !default;
+$badge-pick-text: $button-pick-text !default;
+
+//Util
+
+// Allow parent element of tabs to define color, or just the tab itself */
+.tabs-pick > .tabs,
+.tabs.tabs-pick {
+  @include tab-style($tabs-pick-bg, $tabs-pick-border, $tabs-pick-text);
+  @include tab-badge-style($tabs-pick-text, $tabs-pick-bg);
+}
+
+@mixin tabs-striped($style, $color) {
+  &.#{$style} {
+    .tab-item.tab-item-active,
+    .tab-item.active,
+    .tab-item.activated {
+      margin-top: -4px;
+      color: $color;
+      border-style: solid;
+      border-width: $tabs-striped-border-width 0 0 0;
+      border-color: $color;
+    }
+  }
+}
+
+.tabs-striped {
+  .tabs {
+
+    background-color: #fff;
+    background-image: none;
+    border: 0;
+
+  }
+
+  @include tabs-striped('tabs-pick', $pick);
+  .tab-item {
+    color: $tabs-striped-off-color;
+    opacity: $tabs-striped-off-opacity;
+  }
+}
+
+// Navigational tab */
+
+// Active state for tab
+
+.tab-item.tab-item-active,
+.tab-item.active,
+.tab-item.activated {
+  opacity: 1;
+
+  &.tab-item-pick {
+    color: $pick;
+  }
+
+}
+
+.pick,
+a.pick {
+  color: $pick;
+}
+
+.pick-bg {
+  background-color: $pick;
+}
+
+.pick-border {
+  border-color: $button-pick-border;
+}
+
+.tabs .tab-item .badge,
+.badge {
+  &.badge-pick {
+    @include badge-style($badge-pick-bg, $badge-pick-text);
+  }
+}
+
+.bar {
+  &.bar-pick {
+    @include bar-style($bar-pick-bg, $bar-pick-border, $bar-pick-text);
+  }
+}
+
+.bar-pick {
+  .button {
+    @include button-style($bar-pick-bg, $bar-pick-border, $bar-pick-active-bg, $bar-pick-active-border, $bar-pick-text);
+    @include button-clear($bar-pick-text, $bar-title-font-size);
+  }
+}
+
+.button {
+  &.button-pick {
+    @include button-style($button-pick-bg, $button-pick-border, $button-pick-active-bg, $button-pick-active-border, $button-pick-text);
+    @include button-clear($button-pick-border);
+    @include button-outline($button-pick-border);
+  }
+}
+
+//This will be here
+&.button-outline {
+  @include button-outline($button-pick-border);
+  @include transition(opacity .1s);
+  background: none;
+  box-shadow: none;
+}
+
+.button-clear {
+  @include button-clear($button-pick-border);
+  @include transition(opacity .1s);
+  padding: 0 $button-clear-padding;
+  max-height: $button-height;
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+
+  &.active,
+  &.activated {
+    opacity: 0.3;
+  }
+}
+
+.item {
+  &.item-pick {
+    @include item-style($item-pick-bg, $item-pick-border, $item-pick-text);
+  }
+}
+
+.item.active,
+.item.activated,
+.item-complex.active .item-content,
+.item-complex.activated .item-content,
+.item .item-content.active,
+.item .item-content.activated {
+
+  &.item-pick {
+    @include item-active-style($item-pick-active-bg, $item-pick-active-border);
+  }
+}
+
+.item-complex {
+
+  &.item-pick > .item-content {
+    @include item-style($item-pick-bg, $item-pick-border, $item-pick-text);
+
+    &.active,
+    &:active {
+      @include item-active-style($item-pick-active-bg, $item-pick-active-border);
+    }
+  }
+}
+
+.checkbox {
+  &.checkbox-pick {
+    @include checkbox-style($checkbox-off-border-pick, $checkbox-on-bg-pick, $checkbox-off-border-pick);
+  }
+}
+
+.toggle {
+  &.toggle-pick {
+    @include toggle-style($toggle-on-pick-border, $toggle-on-pick-bg);
+  }
+}
+
+.range {
+  &.range-pick {
+    input {
+      @include range-style($range-pick-track-bg);
+    }
+  }
+}
+
+/**
+ * Spinners
+ * --------------------------------------------------
+ */
+
+.spinner {
+
+  &.spinner-pick {
+    stroke: $spinner-pick-stroke;
+    fill: $spinner-pick-fill;
+  }
+}
+
+.spinner-spiral {
+
+  &.spinner-pick .stop2 {
+    stop-color: $spinner-pick-fill;
+  }
+}

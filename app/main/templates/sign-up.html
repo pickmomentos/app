@@ -1,0 +1,57 @@
+<ion-modal-view ng-controller="SignUpCtrl">
+  <ion-header-bar class="pick-bg">
+    <div class="buttons">
+      <button class="button button-clear button-light"
+        ng-click="closeSignUpModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+    <h1 class="title stable">{{ "signUpText" | translate }}</h1>
+  </ion-header-bar>
+  <ion-content class="pick-bg-dark">
+    <div class="list text-center">
+      <img class="assertive-bg" src="{{logo}}" width="200" height="100" />
+    </div>
+    <div class="list list-inset" style="background:none">
+      <form name="form" novalidate>
+      <label class=" item-input item-floating-label">
+        <span class="input-label texto-normal  ">{{ 'nameText' | translate }}</span>
+        <input type="text" name="name" placeholder="{{ 'nameText' | translate }}"
+        ng-model="registrar.name" required>
+      </label>
+      <br>
+      <label class=" item-input item-floating-label">
+        <span class="input-label texto-normal  ">{{  'userText' | translate }}</span>
+        <input type="text" placeholder="{{  'userText' | translate }}"
+        ng-model="registrar.username" autocapitalize="none" autocorrect="off" required>
+      </label>
+      <br>
+      <label class=" item-input item-floating-label">
+        <span class="input-label texto-normal  ">{{ 'emailText' | translate }}</span>
+        <input type="text" name="email" placeholder="{{ 'emailText' | translate }}"
+          ng-model="registrar.email" autocapitalize="none" autocorrect="off">
+      </label>
+      <br>
+      <label class=" item-input item-floating-label">
+        <span class="input-label texto-normal  ">{{ 'passwordText' | translate }}</span>
+        <input type="password" name="password" required
+          placeholder="{{ 'passwordText' | translate }}"
+          ng-model="registrar.password" autocapitalize="none" autocorrect="off">
+      </label>
+      <br>
+      <label class=" item-input item-floating-label">
+        <span class="input-label texto-normal  ">{{ 'birthText' | translate }}</span>
+        <input type="text" name="birth" required
+          placeholder="{{ 'birthText' | translate }}" onfocus="(this.type='date')"
+          ng-model="registrar.birth" autocapitalize="none" autocorrect="off">
+      </label>
+      <br>
+      <div class="text-center">
+        <button class="button button-{{theme}}" ng-click="onSignUp(form.$valid)">
+        	<strong>{{ "signUpSubmitText" | translate }}</strong>
+        </button>
+      </div>
+      </form>
+    </div>
+  </ion-content>
+</ion-modal-view>

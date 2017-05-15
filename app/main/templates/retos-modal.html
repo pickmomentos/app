@@ -1,0 +1,41 @@
+<ion-modal-view  style="    margin: 20px;
+    width: 90%;
+    border-radius: 25px;
+    border: 6px solid #ccc;
+    min-height: 400px;">
+  <ion-header-bar>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeRetosModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+    <h1 class="title">{{ "challengesModalTitle" | translate }}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-item class="sin-espacio">
+      <p class="text-center padding">
+        <i class="icon ion-trophy text-center positive" style="font-size:3em;"></i>
+      </p>
+      <small>{{challenges.titulo}}</small>
+      <p>
+        <b>Descripción:</b>
+      </p>
+      <small>{{challenges.descripcion}}</small>
+      <p>
+        <b>Política:</b>
+      </p>
+      <small>{{challenges.politicas}}</small>
+    </ion-item>
+
+    <div class="padding">
+      <button type="button" class="button button-block button-positive"
+      ng-click="showConfirm(challenges.id)" ng-disabled="">
+        <span ng-if="isSubmittingReto()">
+          <ion-spinner class="spinner-light"></ion-spinner>
+          {{ "loadingText" | translate }}
+        </span>
+        <span >{{ "AceptarButtonText" | translate }}</span>
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>

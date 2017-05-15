@@ -1,0 +1,34 @@
+<ion-modal-view class="share-modal" style="    margin: 20px;
+    width: 90%;
+    border-radius: 25px;
+    border: 6px solid #ccc;
+    min-height: 400px;">
+  <ion-header-bar>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeShareModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+    <h1 class="title">{{ "shareModalTitle" | translate }}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <button type="button" class="button button-small button-royal"
+        ng-click="onShareFacebook()" ng-disabled="isSubmittingCheckin()"><i class="icon ion-social-facebook"></i></button>
+
+
+        <button type="button" class="button button-small button-royal"
+        ng-click="onShareWhatsapp()" ng-disabled="isSubmittingCheckin()"><i class="icon ion-social-whatsapp"></i></button>
+
+
+        <button type="button" class="button button-small button-royal"
+        ng-click="onSharetwitter()" ng-disabled="isSubmittingCheckin()"><i class="icon ion-social-twitter"></i></button>
+
+
+        <button type="button" class="button button-small button-royal"
+        ng-click="onShare()" ng-disabled="isSubmittingCheckin()"><i class="icon ion-plus"></i></button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,19 @@
+<div class="modal photos-modal dark-bg">
+  <ion-header-bar class="dark-bg">
+    <div class="buttons pull-right">
+      <button class="button button-outline button-light"
+        ng-click="closePhotosModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+  </ion-header-bar>
+
+  <ion-slide-box show-pager="false" delegate-handle="modalPhotosSlideBoxHandle">
+      <ion-slide ng-repeat="imagen in images">
+        <ion-slide ng-if="imagen">
+          <img ng-src="{{imagen}}" class="fullscreen-image" />
+        </ion-slide>
+      </ion-slide>
+  </ion-slide-box>
+
+</div>

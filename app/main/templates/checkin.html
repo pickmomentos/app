@@ -1,0 +1,41 @@
+<ion-view class="checkin-view"  >
+  <ion-nav-title>{{ checkinTitle }}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon">
+      <i class="icon ion-android-checkmark-circle"></i>
+    </button>
+    </ion-nav-buttons>
+  <ion-content>
+    <div class="center padding" ng-if="showErrorView()"
+      ng-include="'main/templates/error-view.html'">
+    </div>
+    <div class="center padding" ng-if="showEmptyView()"
+      ng-include="'main/templates/empty-view.html'">
+    </div>
+
+    <ion-refresher pulling-text="{{ 'loadingText' | translate }}"
+      on-refresh="onReload()"></ion-refresher>
+      <div ng-init='onReload()' >
+        <div class="list card"   ng-repeat="checkin in checkin" bindonce ng-if='showcheckin()'>
+
+          <div class="item item-body" >
+            <img class="full-image" ng-src="main/assets/images/placeholder.png"
+            actual-src="{{ checkin.imagen[0]}}" >
+            <p bo-bind="checkin.texto" class="sin-espacio"></p>
+            <small bo-text="checkin.fecha" style="font-size:80%"></small>
+            <button class="button item-note button-small button-clear asseritve button-right" ng-click="gotoDetail(checkin.lugar, checkin)" >Ver Lugar</button>
+          </div>
+
+        </div>
+      </div>
+
+
+    <ion-infinite-scroll
+      on-infinite="onLoadMore()"
+      ng-if="moreDataCanBeLoaded()"
+      spinner
+      distance="1%">
+    </ion-infinite-scroll>
+
+  </ion-content>
+</ion-view>

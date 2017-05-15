@@ -1,0 +1,67 @@
+<ion-view view-title="{{ 'searchText' | translate }}">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon" ng-click="openDistanceModal()">
+      <i class="icon ion-funnel"></i>
+    </button>
+    <button class="button button-icon" ng-disabled="places.length === 0"
+    ng-click="navigateToMap(params.search)">
+      <i class="icon ion-map"></i>
+    </button>
+    </ion-nav-buttons>
+  <ion-header-bar class="bar bar-subheader item-input-inset">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios-search placeholder-icon"></i>
+      <input type="search" ng-model="params.search"
+      ng-change="onSearch()"
+      ng-model-options="{debounce:1000}"
+      style="text-transform:lowercase"
+      placeholder="{{ 'searchText' | translate }}">
+    </label>
+    <button class="button button-clear" ng-if="search.length"
+      ng-click="clearSearch()">
+      {{ "cancelText" | translate }}
+    </button>
+  </ion-header-bar>
+  <ion-content class="has-subheader" ng-init='onSearch()'>
+
+    <div class="padding center" ng-if="showEmptyView()">
+      <div>
+        <i class="icon icon-large ion-android-sad {{theme}}"></i>
+        <p>{{ "noPlacesFoundText" | translate }}</p>
+      </div>
+    </div>
+
+    <div class="padding center" ng-if="showInitialView()">
+      <div>
+        <i class="icon icon-large ion-ios-search {{theme}}"></i>
+        <p>{{ "searchPlaceholderViewText" | translate }}</p>
+      </div>
+    </div>
+
+    <div  class="list" ng-if="showPlaces()">
+      <a class="item item-thumbnail-left item-button-right {{theme}}" style="padding-bottom: 0;"
+      ng-click="gotoDetail(place.id, place)"  ng-repeat="place in places" bindonce>
+        <img class="animated fadeIn new-img" ng-src="main/assets/images/placeholder.png"
+        actual-src="{{ place.imagen[0]}}">
+        <!-- <h2 bo-bind="$index + 1 + '. ' + place.titulo"></h2> -->
+        <h3 bo-bind="place.titulo" class="sin-espacio"></h3>
+        <small bo-text="place.direccion" style="font-size:80%"></small>
+          <rating  ng-model="place.rating[0].valor" max="maxRating" class="energized">
+          </rating>
+          <small>
+            {{place.especialidad[0]}}
+          </small>
+        <div class="button button-clear " style="top:0px!important; right:2px!important; font-size: 80%;">
+          <i class="icon ion-share royal"></i>
+        </div>
+        <button class="button button-clear">
+          <span class="item-note {{ theme }}" >
+            {{place.d}}
+            <!-- {{ place.getDistance(params.location) }}{{ storage.unit }} -->
+          </span>
+        </button>
+      </a>
+  	</div>
+
+  </ion-content>
+</ion-view>

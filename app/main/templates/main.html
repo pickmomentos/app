@@ -1,0 +1,28 @@
+<ion-view  class="auth-modal" ng-controller="AuthCtrl" cache-view="false" hide-nav-bar="true">
+  <ion-content overflow-scroll=true scroll=true >
+    <div class='pickmomentos' style='transform:scale(1);'>
+      <div class="logo-pick no-header ">
+        <div class="content">
+            <img class="full-width-image" ng-src="main/assets/images/logo.png">
+        </div>
+      </div>
+
+      <div class="padding content-login">
+        <div>
+          <a class="button button-block button-fb" ng-click="onLoginViaFacebook()">
+            <i class="icon ion-social-facebook"></i>
+            {{ "signInViaFacebook" | translate }}
+          </a>
+        </div>
+        <div class="button-bar">
+          <button class="button button-full button-default  texto-normal ink bold"  ng-click="openSignInModal()">
+          {{ "signInText" | translate }}
+          </button>
+          <button class="button button-full button-border icon-left button-assertive texto-normal bold"   ng-click="openSignUpModal()">
+          {{ "signUpText" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

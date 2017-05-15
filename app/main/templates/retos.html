@@ -1,0 +1,35 @@
+<ion-view >
+  <ion-nav-bar   >
+    <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-nav-title >{{ "challengesModalTitle" | translate }}</ion-nav-title>
+
+  <ion-content >
+    <div class="padding center" ng-if="showErrorView()"
+    ng-include="'main/templates/error-view.html'">
+  </div>
+  <div class="padding center" ng-if="showEmptyView()"
+  ng-include="'main/templates/empty-favorites.html'">
+</div>
+
+<ion-refresher
+pulling-text="{{ 'loadingText' | translate }}"
+on-refresh="onReload()"></ion-refresher>
+<i class="icon ion-trophy trofeo-bg"></i>
+<ion-list>
+  <ion-item ng-repeat="r in retos  " class="item-icon-left item-button-right " ng-class="r.storeNumber  ? 'retos-block' : ''">
+
+    <i class="icon ion-trophy positive"></i>
+
+    <p>{{r.titulo}}</p>
+
+    <div class="buttons">
+      <button class="button button-energized " ng-click="openRetosModal(r);" ng-disabled="r.storeNumber">
+        <i class="ion-eye"></i>
+      </button>
+    </div>
+  </ion-item>
+</ion-list>
+
+</ion-content>
+</ion-view>

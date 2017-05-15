@@ -1,0 +1,32 @@
+{
+
+  "SERVER_URL": "http://dev.pick.com.ec/",
+  "SERVER_URL_CHEKIN": "http://dev.pick.com.ec/",
+  "SERVER_URL_REGISTRO": "http://dev.pick.com.ec/",
+  "SERVER_URL_CONSULTA": "http://dev.pick.com.ec/",
+  "SERVER_URL_LOGO": "main/assets/images/logo.png",
+  "parse": {
+      "appId": "DPhH6faffP3XaNctsO7U",
+    "serverUrl": "https://tuhueca.herokuapp.com/parse"
+  },
+	"push": {
+		"appId": null,
+		"googleProjectNumber": null
+	},
+
+  "admob": {
+		"interstitialForAndroid": null,
+		"interstitialForiOS": null,
+    "bannerId": null
+	},
+
+	"gaTrackingId": null,
+
+	"theme": "default",
+
+	"unit": "km",
+
+  "mapType": "normal",
+
+	"statusBarColor": "#1b68ea"
+}

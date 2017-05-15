@@ -1,0 +1,69 @@
+<ion-view class="places-view"  >
+  <ion-nav-title>{{ categoryTitle }}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon" ng-click="openDistanceModal()">
+      <i class="icon ion-funnel"></i>
+    </button>
+    <button class="button button-icon" ng-disabled="places.length === 0"
+    ng-click="navigateToMap(params.search)">
+      <i class="icon ion-map"></i>
+    </button>
+    </ion-nav-buttons>
+    <ion-header-bar class="bar bar-subheader item-input-inset">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" ng-model="params.search"
+        ng-change="onSearch()"
+        ng-model-options="{debounce:1000}"
+        style="text-transform:lowercase"
+        placeholder="{{ 'searchText' | translate }}">
+      </label>
+      <button class="button button-clear" ng-if="search.length"
+        ng-click="clearSearch()">
+        {{ "cancelText" | translate }}
+      </button>
+    </ion-header-bar>
+  <ion-content>
+    <div class="center padding" ng-if="showErrorView()"
+      ng-include="'main/templates/error-view.html'">
+    </div>
+    <div class="center padding" ng-if="showEmptyView()"
+      ng-include="'main/templates/empty-view.html'">
+    </div>
+
+    <ion-refresher pulling-text="{{ 'loadingText' | translate }}"
+      on-refresh="onReload()"></ion-refresher>
+  	<div class="list" ng-if="showPlaces()">
+	    <a class="item item-thumbnail-left item-button-right {{theme}}" style="padding-bottom: 0;"
+      ng-click="gotoDetail(place.id, place)"  ng-repeat="place in places" bindonce>
+	      <img class="animated fadeIn new-img" ng-src="main/assets/images/placeholder.png"
+        actual-src="{{ place.imagen[0]}}">
+	      <!-- <h2 bo-bind="$index + 1 + '. ' + place.titulo"></h2> -->
+        <h3 bo-bind="place.titulo" class="sin-espacio"></h3>
+	      <small bo-text="place.direccion" style="font-size:80%"></small>
+          <rating  ng-model="place.rating[0].valor" max="maxRating">
+          </rating>
+          <small>
+            {{place.especialidad[0]}}
+          </small>
+        <div class="button button-clear "  style="top:0px!important; right:2px!important; font-size: 80%;">
+          <i class="icon ion-chevron-right royal"></i>
+        </div>
+        <button class="button button-clear">
+          <span class="item-note {{ theme }}" >
+            {{place.d}}
+            <!-- {{ place.getDistance(params.location) }}{{ storage.unit }} -->
+          </span>
+        </button>
+	    </a>
+  	</div>
+
+    <ion-infinite-scroll
+      on-infinite="onLoadMore()"
+      ng-if="moreDataCanBeLoaded()"
+      spinner
+      distance="1%">
+    </ion-infinite-scroll>
+
+  </ion-content>
+</ion-view>

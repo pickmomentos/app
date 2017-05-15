@@ -1,0 +1,44 @@
+<ion-modal-view class="checkin-modal" style="    margin: 20px;
+    width: 90%;
+    border-radius: 25px;
+    border: 6px solid #ccc;
+    min-height: 400px;">
+  <ion-header-bar>
+    <div class="buttons">
+      <button class="button button-clear balanced" ng-click="closeCheckModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+    <h1 class="title">{{ "checkModalTitle" | translate }}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <div class="photo-box" style=" width: 60px;
+          height: 60px;
+          background-size: cover;" ng-click="uploadImageOne()"
+        ng-style="{'background-image':'url(' + place.image + ')'}">
+          <i class="icon ion-camera balanced" style="font-size:2em;"
+          ng-if="!isImageOneUploading && !place.image">
+          </i>
+          <ion-spinner ng-if="isImageOneUploading && !place.image">
+          </ion-spinner>
+        </div>
+
+      </ion-item>
+      <ion-item>
+        <textarea rows="8" cols="40" placeholder="{{ 'commentReviewInputText' | translate }}" ng-model="checkin.comment"></textarea>
+      </ion-item>
+    </ion-list>
+    <div class="padding">
+      <button type="button" class="button button-block button-balanced"
+      ng-click="onSubmitCheckin('create')" ng-disabled="isSubmittingCheckin()">
+        <span ng-if="isSubmittingCheckin()">
+          <ion-spinner class="spinner-light"></ion-spinner>
+          {{ "loadingText" | translate }}
+        </span>
+        <span ng-if="!isSubmittingCheckin()">{{ "submitCheckButtonText" | translate }}</span>
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>

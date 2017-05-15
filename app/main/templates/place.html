@@ -1,0 +1,196 @@
+<ion-view class="place-view">
+  <ion-nav-bar  class="ben-positive ben-header"  id="ben-header"  >
+    <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-nav-title >{{ place.title }}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button type="button"
+       class="button button-icon " ng-click="openGoogleMaps(place.latitud, place.longitud)" ng-disabled="!place">
+      <i class="icon  ion-map assertive">
+      </i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content style='top:0px!important' id="myFunction" delegate-handle="handler">
+    <div class="padding center" ng-if="showErrorView()"
+      ng-include="'main/templates/error-view.html'"></div>
+
+    <div ng-if="showPlace()">
+      <div class="place-thumb">
+        <img class="place-img" width="40" height="40" actual-src="{{ place.imagen[0] }}"
+        ng-src="main/assets/images/placeholder.png" />
+        <span class="place-title">{{ place.titulo }}</span>
+      </div>
+      <div ng-if="!existImages()">
+        <div class="place-bg animated fadeIn"></div>
+      </div>
+      <ion-slide-box>
+					<ion-slide ng-repeat="imagen in images">
+            <div class="place-bg animated fadeIn"
+            ng-click="openPhotosModal($index)"
+            style="background-image: url('{{ imagen }}')"></div>
+					</ion-slide>
+			</ion-slide-box>
+      <div class="button-bar">
+        <button type="button"
+          class="button button-bar-place"
+          ng-click="openStarModal()">
+          <i class="icon" ng-class="isStarred ? 'ion-ios-star energized' : 'ion-ios-star-outline energized'">
+          </i>
+          <small>Valorar</small>
+        </button>
+        <button type="button"
+          class="button button-bar-place"
+          ng-click="onLikePlace()">
+          <i class="icon"
+            ng-class="isLiked ? 'ion-ios-heart  assertive' : 'ion-ios-heart-outline  assertive' ">
+          </i>
+          <small>Favorito</small>
+        </button>
+        <button type="button"
+          class="button button-bar-place"
+          ng-click="gotoRetos(place.id)">
+          <i class="icon ion-trophy positive" >
+          </i>
+          <small>Retos</small>
+        </button>
+        <button type="button"
+          class="button  button-bar-place"
+          ng-click="openCheckModal()">
+          <i class="icon" ng-class="isCheckin ? 'ion-ios-checkmark balanced' : 'ion-ios-checkmark-outline balanced '">
+          </i>
+          <small> Check-in</small>
+        </button>
+
+        <button type="button"
+           class="button button-bar-place" ng-click="openShareModal()" ng-disabled="!place">
+          <i class="icon  ion-share royal">
+          </i>
+          <small>Compartir</small>
+        </button>
+      </div>
+      <div class="">
+        <a class="item item-text-wrap">{{ place.descripcion }}</a>
+      </div>
+      <div class="">
+        <a ng-click="openGoogleMaps(place.latitud, place.longitud)" class="item item-image">
+          <img ng-src="https://maps.googleapis.com/maps/api/staticmap?zoom=18&size=600x200&markers={{place.latitud}},{{place.longitud}}" />
+        </a>
+        <a class="item item-text-wrap">{{ place.direccion }}</a>
+      </div>
+      <!-- <div class="item item-divider"  ng-if="place.preferencias.length  > 0">
+        Categorías
+      </div> -->
+        <div class="item item-icon-left " ng-if="place.preferencias.length > 0">
+          <i class="icon ion-ios-list {{theme}}"></i>
+          <div class="list-preferencia">
+          <div class="preferencias-places" ng-repeat='(key,value) in place.preferencias'>
+            {{value}}
+          </div>
+        </div>
+
+        </div>
+      <!-- <div class="item item-divider"  ng-if="place.especialidad.length  > 0">
+        Especialidad
+      </div> -->
+        <div class="item item-icon-left " ng-if="place.especialidad.length > 0">
+          <i class="icon ion-android-restaurant {{theme}}"></i>
+          <div class="list-preferencia">
+            <div class="preferencias-places" ng-repeat='(key,value) in place.especialidad'>
+              {{value}}
+            </div>
+          </div>
+
+        </div>
+      <!-- <div class="item item-divider"  ng-if="place.direccion.length > 0">
+        Ubicación
+      </div> -->
+      <div class="list ">
+        <div class="item item-icon-left " ng-if="place.ciudad.length > 0">
+          <i class="icon ion-location {{theme}}"></i>
+          {{ place.ciudad }}
+        </div>
+        <div class="item item-divider"  ng-if="place.tel_celular.length > 0">
+          {{ "callToText" | translate }}
+        </div>
+        <div class="list-preferencia">
+          <div ng-if="place.tel_celular.length > 0" ng-repeat='(key,value) in place.tel_celular'>
+            <a ng-href="tel:{{ value }}" class="item item-icon-left item-icon-right" >
+              <i class="icon ion-android-phone-portrait {{theme}}"></i>
+              {{ value }}
+              <i class="icon ion-chevron-right {{theme}}"></i>
+            </a>
+          </div>
+          <div ng-if="place.tel_convencional.length > 0" ng-repeat='(key,value) in place.tel_convencional'>
+            <a ng-href="tel:{{ value }}" class="item item-icon-left item-icon-right" >
+              <i class="icon ion-ios-telephone {{theme}}"></i>
+              {{ value }}
+              <i class="icon ion-chevron-right {{theme}}"></i>
+            </a>
+          </div>
+        </div>
+
+        <a ng-click="openUrl(place.web)" class="item item-icon-left item-icon-right"
+          ng-if="place.web.length > 0 && place.web !== 'http://'">
+          <i class="icon ion-ios-world {{theme}}"></i>
+          {{ "openWebsiteText" | translate }}
+          <i class="icon ion-chevron-right {{theme}}"></i>
+        </a>
+        <div class="item item-icon-left item-icon-right" ng-if="place.wifi">
+          <i class="icon ion-ios-telephone {{theme}}"></i>
+          Wifi {{place.wifi}}
+        </div>
+        <div class="item item-icon-left item-icon-right" ng-if="place.reservas !== ''">
+          <i class="icon ion-bookmark {{theme}}"></i>
+          {{place.reservas}}
+        </div>
+        <div class="item item-icon-left item-icon-right" ng-if="place.parqueo.length > 0  ">
+          <i class="icon ion-android-car {{theme}}"></i>
+          {{place.parqueo}}
+        </div>
+        <div class="item item-icon-left item-icon-right" ng-if="place.pago.length > 0 ">
+          <i class="icon ion-card {{theme}}"></i>
+          {{place.pago}}
+        </div>
+      </div>
+      <ion-list>
+        <ion-item class="item-divider">
+          <br>
+          {{ "reviewsTitle" | translate }}
+        </ion-item>
+        <ion-item ng-if="!existReviews()">
+          <p>
+            {{ "reviewsNotFoundText" | translate }}
+          </p>
+        </ion-item>
+        <ion-item class="item-avatar item-text-wrap" >
+          <img ng-src="main/assets/images/avatar.png"
+          actual-src="{{ review.url }}" />
+          <rating ng-if="review.rating" readonly="readOnly"
+          ng-model="review.rating" max="maxRating">
+          </rating>
+          <p ng-bind="review.comment"></p>
+        </ion-item>
+        <ion-item class="item-avatar item-text-wrap"
+        ng-repeat="review in reviews" bindonce>
+          <img ng-src="main/assets/images/avatar.png"
+          actual-src="{{ review.url }}" />
+          <h2 bo-text="review.titulo"></h2>
+          <rating ng-if="review.valor" readonly="readOnly"
+          ng-model="review.valor" max="maxRating">
+          </rating>
+          <p bo-text="review.texto"></p>
+          <small bo-text=review.fecha></small>
+        </ion-item>
+      </ion-list>
+
+      <ion-list type="card" ng-if="existReviews()">
+        <ion-item class="item-icon-right" href="#/app/place/{{place.id}}/reviews">
+          {{ "openReviewsButtonText" | translate }}
+          <i class="icon ion-chevron-right {{ theme }}"></i>
+        </ion-item>
+      </ion-list>
+      <br>
+
+    </div>
+  </ion-content>
+</ion-view>

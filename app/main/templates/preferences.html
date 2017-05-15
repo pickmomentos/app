@@ -1,0 +1,28 @@
+<ion-view view-title="{{ 'preferencesTitle' | translate }}" hide-back-button="false">
+  <ion-nav-buttons side="right">
+    <button   class="button button-clear" ng-click='userUpdatePreferences(preferencesSelected);'><i class="icon ion-ios-checkmark-empty"> Guardar </i></button>
+  </button>
+  </ion-nav-buttons>
+    <ion-content  overflow-scroll=true scroll=true  >
+        <h5 class="content padding double-padding-x">Ayúdanos a crear tu propia experiencia personalizada</h5>
+        <div class="" ng-init='loadEvent(true)'>
+          <div  class="list animate-fade-slide-in-right">
+            <div class='item item-divider line-height-normal height  padding-preferencia'  ng-repeat="(key, value) in listPreferences | groupBy: 'Categoria'">
+              <div class="rem">
+                {{key}}
+              </div>
+              <div class="list-preferencia">
+                <div  class=" item-thumbnail-preferencia in done in" ng-class="{class_active: searchPreferences(listPreferences.pid)}"  ng-repeat="listPreferences in value">
+                  <div   ng-click='SavePreferences(listPreferences.pid,listPreferences.cid)'>
+                    <i class="{{listPreferences.clase}} font-icon"></i>
+                    <div class="no-margin">
+                      {{listPreferences.Preferencia}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </ion-content>
+</ion-view>

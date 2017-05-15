@@ -1,0 +1,43 @@
+<ion-view class="places-view">
+  <ion-nav-title>{{ "favoritesText" | translate }}</ion-nav-title>
+  <ion-content>
+    <div class="padding center" ng-if="showErrorView()"
+      ng-include="'main/templates/error-view.html'">
+    </div>
+    <div class="padding center" ng-if="showEmptyView()"
+      ng-include="'main/templates/empty-favorites.html'">
+    </div>
+
+    <ion-refresher
+    pulling-text="{{ 'loadingText' | translate }}"
+    on-refresh="onReload()"></ion-refresher>
+
+  	<div class="list" ng-if="showPlaces()">
+      <a class="item item-thumbnail-left item-button-right {{theme}}" style="padding-bottom: 0;"
+      ng-click="gotoDetail(place.id, place)"  ng-repeat="place in places" bindonce>
+	      <img class="animated fadeIn new-img" ng-src="main/assets/images/placeholder.png"
+        actual-src="{{ place.imagen[0]}}">
+	      <!-- <h2 bo-bind="$index + 1 + '. ' + place.titulo"></h2> -->
+        <h3 bo-bind="place.titulo" class="sin-espacio"></h3>
+	      <small bo-text="place.direccion" class="sin-espacio" style="font-size:80%"></small>
+          <!-- <rating  ng-model="place.rating[0].valor" max="maxRating">
+          </rating> -->
+          <!-- <small>
+            {{place.especialidad[0]}}
+          </small> -->
+        <div class="button button-clear "  ng-click="onShare()" style="top:0px!important; right:2px!important; font-size: 80%;">
+          <i class="icon ion-heart "></i>
+        </div>
+
+	    </a>
+  	</div>
+
+    <ion-infinite-scroll
+      on-infinite="onLoadMore()"
+      ng-if="moreDataCanBeLoaded()"
+      spinner
+      distance="1%">
+    </ion-infinite-scroll>
+
+  </ion-content>
+</ion-view>

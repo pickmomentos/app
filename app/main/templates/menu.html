@@ -1,0 +1,48 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu id="side-menu" side="left" expose-aside-when="large">
+    <ion-content class="menu"  ng-init="versionador()">
+      <div style="background:  url({{ getPicture() }});
+      background-size: cover;
+      filter: blur(4px);
+      height: 130px;">
+
+    </div>
+    <div>
+      <img class="img-profile" width="70" height="70" style="    position: absolute;
+      top: 0;
+      left: 4%;    z-index: 2;"
+      actual-src="{{ getPicture() }}" ng-src="main/assets/images/avatar.png">
+      <span style="    background: white;
+      border-radius: 2px;
+      -webkit-border-radius: 2px;
+        padding: 4px 16px;
+        opacity: .7;
+        top: 35px;
+        left: 62px;
+        position: absolute;
+        z-index: 1;
+        margin: 10px;
+      " ng-class="{ hidden:!user }">  {{ user.name }}</span>
+    </div>
+
+    <ion-list>
+      <ion-item ng-repeat='menu in listMenu' menu-close nav-clear ng-click="{{menu.funcion}}" ng-show={{menu.visible}}>
+        <i class="{{menu.icon}} padding"></i>
+        {{ menu.nombre | translate }}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-side-menu>
+<ion-side-menu-content>
+  <ion-nav-bar class="bar-{{theme}}">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-nav-view name="menuContent"></ion-nav-view>
+  <!-- <div ng-include="&apos;main/templates/tabs.html&apos;"> -->
+</ion-side-menu-content>
