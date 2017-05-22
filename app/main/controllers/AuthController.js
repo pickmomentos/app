@@ -2,27 +2,28 @@
 angular.module('main')
 .controller('AuthCtrl',
   function ($scope, $state, $ionicLoading, $ionicModal, $translate, $rootScope,
-    $q, Facebook, Dialog, User, Toast, GoogleAnalytics, $log) {
+    $q, Facebook, Dialog, User, Toast, GoogleAnalytics, $log, $ionicHistory, $ionicPlatform, AdMobService, $cordovaSplashscreen) {
 
     GoogleAnalytics.trackView('Auth Screen');
-    //
-    // var validateUSer = JSON.parse($window.localStorage.getItem('user'));
-    // if (validateUSer !== null) {
-    //   if (validateUSer.field_saw_preference.und[0].value === '1') {
-    //     $state.go('app.preferences');
-    //   } else {
-    //     $state.go('app.categories');
+    // $ionicPlatform.registerBackButtonAction(function (event) {
+    //   $log.log(event);
+    //   $log.log($state.current.name);
+    //   if ($state.current.name === 'main') {
+    //     $ionicPopup.confirm({
+    //       title: 'Alerta',
+    //       content: 'Estas seguro de  salir de pick'
+    //     })
+    //     .then(function (result) {
+    //       if (result) {
+    //         ionic.Platform.exitApp();
+    //       }
+    //     });
     //   }
-    //
-    // } else {
-    //    $state.go('main');
-    // }
+    //   else {
+    //     $state.go('app.home');
+    //   }
+    // }, 100);
 
-    // if ($window.localStorage.getItem('user') !== null) {
-    //   $state.go('app.home');
-    // } else {
-    //   $state.go('main');
-    // }
     $scope.Facebooklogin = {};
 
     var showLoading = function () {
@@ -46,32 +47,32 @@ angular.module('main')
       showLoading();
       // var fbData = null;
       Facebook.me().then(function (data) {
-        $log(fbAuthData);
+        $log.log(fbAuthData);
         User.signInViaFacebook(fbAuthData, data).then(function (result) {
-          $log('inicio');
-          $log(data);
+          $log.log('inicio');
+          $log.log(data);
           if (result.message === 'OK') {
-            $log('Entro');
+            $log.log('Entro');
             User.setLocalVariable('FacebookData', angular.toJson(data));
-            $log(result.status);
+            $log.log(result.status);
             if (result.status === '2') {
               $scope.Facebooklogin.username = result.data.user;
               $scope.Facebooklogin.password = result.data.class;
               $rootScope.$emit('LoginSession', $scope.Facebooklogin);
-              $log($scope.Facebooklogin);
+              $log.log($scope.Facebooklogin);
               // $rootScope.$emit('LoginSession', $scope.Facebooklogin);
             }
             if (result.status === '1') {
               $scope.Facebooklogin.username = result.data.name;
               $scope.Facebooklogin.password = result.data.class;
-              $log($scope.Facebooklogin);
+              $log.log($scope.Facebooklogin);
               $rootScope.$emit('LoginSession', $scope.Facebooklogin);
             }
 
             // $rootScope.$broadcast('LoginSession', $scope.Facebooklogin);
           }
         }, function (error) {
-          $log(error);
+          $log.log(error);
 
         });
         hideLoading();
@@ -175,4 +176,11 @@ angular.module('main')
       onUserLogged();
     });
 
+    $scope.$on('$ionicView.loaded', function () {
+      $ionicPlatform.ready(function () {
+        if (navigator && navigator.splashscreen) {
+          $cordovaSplashscreen.hide();
+        }
+      });
+    });
   });

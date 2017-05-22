@@ -2,12 +2,28 @@
 angular.module('main')
 .controller('MenuCtrl',
   function ($scope, $rootScope, $state, $translate, $timeout, $ionicLoading,
-    $ionicModal, $localStorage, User, Toast, Menu, $window, Facebook, $log) {
+    $ionicModal, $localStorage, User, Toast, Menu, $window, Facebook, $log, $ionicHistory) {
 
     $scope.user = JSON.parse(User.getLoggedUser());
-    $log.log($scope.user);
     $scope.storage = $localStorage;
-    $log.log( $scope.storage );
+    var isErrorView = false;
+    var isLoadingViewShown = false;
+
+    var showLoading = function () {
+
+      isLoadingViewShown = true;
+
+      isErrorView = false;
+
+      $ionicLoading.show({
+        templateUrl: 'main/templates/loading.html',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        scope: $scope,
+        showDelay: 0
+      });
+    };
 
     var trans;
     $translate(['loggedOutText']).then(function (translations) {
@@ -18,14 +34,20 @@ angular.module('main')
       $log.log(version);
       if (version === '') {
         User.version().then( function (response) {
+          console.log("menu");
+          console.log(response);
           if (response.message === 'OK') {
             User.setLocalVariable('version', response.data.pick_customer_version_menu_numero);
             $scope.MenuDinamico(true);
+          }else {
+            $scope.listMenu = [];
           }
         });
       } else {
         $log.log('si tiene');
         User.version().then( function (response) {
+          console.log("menu");
+          console.log(response);
           $log.log(parseInt(version));
           $log.log(response.data.pick_customer_version_menu_numero);
           if (parseInt(version) === response.data.pick_customer_version_menu_numero) {
@@ -40,10 +62,22 @@ angular.module('main')
         });
       }
     };
-
+    var showErrorView = function () {
+      isErrorView = true;
+      isLoadingViewShown = false;
+      $ionicLoading.hide();
+    };
+    $scope.showErrorView = function () {
+      return isErrorView;
+    };
+    $scope.onReload = function () {
+      $scope.versionador();
+      
+    };
     $scope.MenuDinamico = function (version) {
       // $scope.isLoading = true;
       Menu.getMenu(version).then(function (data) {
+        console.log("menu");
         $scope.listMenu = data;
         $log.log($scope.listMenu);
       }, function (error) {
@@ -189,6 +223,10 @@ angular.module('main')
         $scope.user = null;
         $scope.onLogoutFacebook();
         Toast.show(trans.loggedOutText);
+
+        $ionicHistory.nextViewOptions({
+          disableBack: true
+        });
         $state.go('main');
       } else {
         $log.log(loggged);

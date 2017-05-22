@@ -36,10 +36,16 @@ $bar-footer-height: 54px !default;
 
 
 $primary: $pick;
+.col-qr{
+  display: flex;
+  flex-direction: column!important;
+}
 .space-none{
   white-space: normal;
 }
-
+.assertive-i{
+  color: #ef4e3a!important;
+}
 ion-nav-bar#ben-header{
   position: absolute;
   width: 100%;

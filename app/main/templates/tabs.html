@@ -1,29 +1,13 @@
-
-
-  <!--
-  Create tabs with an icon and label, using the tabs-positive style.
-  Each tab's child <ion-nav-view> directive will have its own
-  navigation history that also transitions its views in and out.
-  -->
-  <ion-tabs class="tabs-icon-bottom tabs-bottom tabs-assertive">
-  <!-- Dashboard Tab -->
-  <!-- Ion tab for andrid and iphone -->
-  <!-- Home  -->
-
-  <ion-tab  title="Inicio" ng-click='onHome()'  icon-off="ion-ios-home-outline" icon-on="ion-ios-home" >
-    <ion-nav-view name="menuContent"></ion-nav-view>
-  </ion-tab>
-  <!-- Home end -->
-  <!-- Promociones  -->
-  <ion-tab    title="Cupones" ng-click='onHome()' icon-off="ion-ios-pricetags-outline" icon-on="ion-ios-pricetags" >
-    <!-- <ion-nav-view name="menuContent" ></ion-nav-view> -->
-  </ion-tab>
-  <!-- Promociones end -->
-  <!-- Mapa  -->
-
-  <ion-tab  title="Promociones" ng-click='onHome()'  icon-off="ion-ios-star-outline" icon-on="ion-ios-star" >
-    <!-- <ion-nav-view name="menuContent"></ion-nav-view> -->
-  </ion-tab>
-  <!-- Mapa end -->
-
-</ion-tabs>
+<ion-view  >
+  <ion-tabs class="tabs-default  tabs-icon-top" >
+    <ion-tab title="Inicio" icon="ion-home" class="assertive-i" href="#/app/home">
+      <ion-nav-view name="tab-home"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="Registrar Compra" icon="ion-qr-scanner"  class="assertive-i" href="#/app/scan">
+      <ion-nav-view name="tab-compra"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="Mis retos" icon="ion-trophy"  class="assertive-i" href="#/app/my-retos">
+      <ion-nav-view name="tab-retos"></ion-nav-view>
+    </ion-tab>
+  </ion-tabs>
+</ion-view>

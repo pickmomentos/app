@@ -1,6 +1,9 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu id="side-menu" side="left" expose-aside-when="large">
     <ion-content class="menu"  ng-init="versionador()">
+      <div class="padding center" ng-if="listMenu.length === undefined "
+      ng-include="'main/templates/error-view.html'"></div>
+
       <div style="background:  url({{ getPicture() }});
       background-size: cover;
       filter: blur(4px);
@@ -43,6 +46,6 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-nav-view name="menuContent"></ion-nav-view>
-  <!-- <div ng-include="&apos;main/templates/tabs.html&apos;"> -->
+  <ion-nav-view ></ion-nav-view>
+
 </ion-side-menu-content>

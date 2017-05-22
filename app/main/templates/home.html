@@ -12,14 +12,14 @@
     <div class="padding center" ng-if="showErrorView()"
     ng-include="'main/templates/error-view.html'"></div>
     <div class="row CategoryList">
-      <div ng-controller="scanController" class="col item-thumbnail-categories">
-        <div class=" animated fadeIn"ng-click="scanBarcode();"  >
+      <!-- <div ng-controller="scanController" class="col item-thumbnail-categories">
+        <div class=" animated fadeIn" ng-click="gotoScan();"  >
           <i class="ion-qr-scanner font-iconos"></i>
           <div class="no-margin">
             Registrar compra
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div  ng-if="showCategories()" class=" col item-thumbnail-categories in done in"   ng-repeat="category in categories">
         <a class='text-decoration-n white' ng-href="#/app/places/{{category.id}}/{{category.nombre}}/{{category.tipo}}">

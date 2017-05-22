@@ -190,13 +190,7 @@ angular.module('main')
   }).then(function (modal) {
     $scope.starModal = modal;
   });
-  // FUNBCION DE MODAL DE INCIO DE SESISION
-  $ionicModal.fromTemplateUrl('main/templates/auth-modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function (modal) {
-    $scope.authModal = modal;
-  });
+
   // MODAL PARA MOSTRAR LOS checkin
   $ionicModal.fromTemplateUrl('main/templates/checkin-modal.html', {
     scope: $scope,
@@ -276,8 +270,6 @@ angular.module('main')
 
     if (User.getLoggedUser()) {
       $scope.starModal.show();
-    } else {
-      $scope.authModal.show();
     }
   };
 
@@ -285,8 +277,6 @@ angular.module('main')
 
     if (User.getLoggedUser()) {
       $scope.checkinModal.show();
-    } else {
-      $scope.authModal.show();
     }
   };
   $scope.closeCheckModal = function () {
@@ -297,8 +287,6 @@ angular.module('main')
 
     if (User.getLoggedUser()) {
       $scope.shareModal.show();
-    } else {
-      $scope.authModal.show();
     }
   };
   $scope.closeShareModal = function () {
@@ -397,27 +385,16 @@ angular.module('main')
       }, function () {
         $scope.isLiking = false;
       });
-    } else {
-      $scope.authModal.show();
     }
   };
 
-  $rootScope.$on('onCloseAuthModal', function () {
-    $scope.authModal.hide();
-  });
-
-  var onUserLogged = $rootScope.$on('onUserLogged', function () {
-    $scope.authModal.hide();
-  });
 
   $scope.$on('$destroy', function () {
     // $scope.reviewModal.remove();
     $scope.starModal.remove();
     $scope.checkinModal.remove();
-    $scope.authModal.remove();
     $scope.photosModal.remove();
     $scope.shareModal.remove();
-    onUserLogged();
   });
 
   $scope.isSubmittingCheckin = function () {

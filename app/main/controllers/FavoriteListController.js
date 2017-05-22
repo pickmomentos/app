@@ -104,18 +104,23 @@ angular.module('main')
       showErrorView();
     } else {
       Favorites.getFavorites($scope.params, $scope.user.uid).then(function (places) {
-        ensureMoreData(places.length);
-        setCurrentPage($scope.params.page + 1);
-        setPlaces(places);
-
-        if ($scope.places.length === 0) {
+        if (places.length === 0  && $scope.params.page === 0) {
           showEmptyView();
-        } else {
-          showPlaces();
-        }
+          $scope.$broadcast('scroll.refreshComplete');
 
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-        $scope.$broadcast('scroll.refreshComplete');
+        } else if (places.length === 0  && $scope.params.page > 0) {
+          showPlaces();
+          ensureMoreData(places.length);
+          $scope.$broadcast('scroll.refreshComplete');
+        } else {
+
+          ensureMoreData(places.length);
+          setCurrentPage($scope.params.page + 1);
+          setPlaces(places);
+          showPlaces();
+          $scope.$broadcast('scroll.refreshComplete');
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
 
       }, function () {
         showErrorView();

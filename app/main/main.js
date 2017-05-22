@@ -1,5 +1,5 @@
 'use strict';
-/*global Parse cordova */
+/*global  cordova */
 angular.module('main', [
   'ionic',
   'ngCordova',
@@ -23,6 +23,7 @@ angular.module('main', [
     $localStorage.unit = Config.ENV.unit;
   }
 
+
   if (!$localStorage.mapType) {
     $localStorage.mapType = Config.ENV.mapType;
   }
@@ -35,12 +36,10 @@ angular.module('main', [
     }
   });
 
-  Parse.initialize(Config.ENV.parse.appId);
-  Parse.serverURL = Config.ENV.parse.serverUrl;
+
   $ionicPlatform.ready(function () {
     if (window.Connection) {
       if (navigator.connection.type === Connection.NONE) {
-        $log.log('no hay conexion');
         $ionicPopup.confirm({
           title: 'Internet desconectado',
           content: 'El internet está desconectado en tu dispositivo'
@@ -54,7 +53,7 @@ angular.module('main', [
     }
     if ($window.localStorage.getItem('user') !== null) {
       // var validateUser = JSON.parse($window.localStorage.getItem('user'));
-      $state.go('app.home');
+        $state.go('app.home');
     }
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -119,6 +118,7 @@ angular.module('main', [
     //$ionicConfigProvider.scrolling.jsScrolling(false);
     Drupal.settings.site_path = "http://dev.pick.com.ec/";
     //Drupal.settings.site_path = "http://devel.local/pick-backend";
+    console.log(Drupal.settings.site_path);
     // Set the Service Resource endpoint path.
     Drupal.settings.endpoint = "rest";
     // Set to true to enable local storage caching for entities.
@@ -390,8 +390,7 @@ angular.module('main', [
     .state('app', {
       url: '/app?clear',
       abstract: true,
-      templateUrl: 'main/templates/menu.html',
-      controller: 'MenuCtrl'
+      templateUrl: 'main/templates/tabs.html',
     })
     .state('walkthrough', {
       url: '/walkthrough?force',
@@ -402,57 +401,67 @@ angular.module('main', [
       url: '/main?force',
       templateUrl: 'main/templates/main.html',
     })
+    .state('app.home', {
+      url: '/home',
+      views: {
+        'tab-home': {
+          templateUrl: 'main/templates/home.html',
+         controller: 'HomeCtrl'
+        }
+      }
+    })
+    .state('app.scan', {
+      url: '/scan',
+      views: {
+        'tab-compra': {
+          templateUrl: 'main/templates/scanner.html',
+          controller: 'scanController'
+        }
+      }
+    })
+    .state('app.my-retos', {
+      url: '/my-retos',
+      views: {
+        'tab-retos': {
+          templateUrl: 'main/templates/my-retos.html',
+        }
+      }
+    })
+
     .state('app.profile', {
       url: '/profile',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/profile.html',
           controller: 'ProfileCtrl'
         }
       }
     })
+
     .state('app.preferences', {
       url: '/preferences',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/preferences.html',
           controller: 'PreferencesCtrl'
         }
       }
-    })
-    .state('app.home', {
-      url: '/home',
-      views: {
-        'menuContent': {
-          templateUrl: 'main/templates/home.html',
-          controller: 'HomeCtrl'
-        }
-      }
-    })
-    .state('app.categories', {
-      url: '/categories',
-      views: {
-        'menuContent': {
-          templateUrl: 'main/templates/categories.html',
-          controller: 'CategoryListCtrl'
-        }
-      }
+
     })
 
     .state('app.search', {
       url: '/search',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/search.html',
           controller: 'SearchCtrl'
         }
       }
-
     })
     .state('app.checkin', {
       url: '/checkin',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/checkin.html',
           controller: 'checkinCtrl'
         }
@@ -462,7 +471,7 @@ angular.module('main', [
     .state('app.favorites', {
       url: '/favorites',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/favorites.html',
           controller: 'FavoriteListCtrl'
         }
@@ -471,7 +480,7 @@ angular.module('main', [
     .state('app.places', {
       url: '/places/:categoryId/:categoryTitle/:type',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/places.html',
           controller: 'PlaceListCtrl'
         }
@@ -481,7 +490,7 @@ angular.module('main', [
       url: '/place/',
       params: { placeId: null, obj: null },
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/place.html',
           controller: 'PlaceDetailCtrl'
         }
@@ -491,7 +500,7 @@ angular.module('main', [
       url: '/place/retos',
       params: { placeId: null},
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/retos.html',
           controller: 'ChallengesCtrl'
         }
@@ -500,59 +509,17 @@ angular.module('main', [
     .state('app.reviews', {
       url: '/place/:placeId/reviews',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/reviews.html',
           controller: 'ReviewListCtrl'
         }
       }
     })
-    .state('app.new', {
-      url: '/new',
-      views: {
-        'menuContent': {
-          templateUrl: 'main/templates/place-new.html',
-          controller: 'PlaceNewCtrl'
-        }
-      }
-    })
-    // .state('tab', {
-    //   url: "/tab",
-    //   abstract: true,
-    //   templateUrl: "main/templates/tabs.html",
-    //   controller: 'MenuCtrl'
-    // })
-    // .state('app.home', {
-    //   url: '/home',
-    //   views: {
-    //     'tab-main': {
-    //       templateUrl: 'main/templates/home.html',
-    //       controller: 'HomeCtrl'
-    //     }
-    //   }
-    // })
-    // .state('app.map', {
-    //   url: '/map',
-    //   views: {
-    //     'tab-map': {
-    //       templateUrl: 'templates/mapa.html',
-    //       // controller: 'MainCtrl'
-    //     }
-    //   }
-    // })
-    // .state('app.promocion', {
-    //   url: '/promocion',
-    //   views: {
-    //     'tab-promocion': {
-    //       templateUrl: 'templates/promocion.html',
-    //       controller: 'PromoCtrl'
-    //     }
-    //   }
-    // })
-    //
+
     .state('app.map2', {
       url: '/map2/:search/:type',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/map.html',
           controller: 'MapCtrl'
         }
@@ -561,7 +528,7 @@ angular.module('main', [
     .state('app.map', {
       url: '/map/:categoryId/:categoryTitle/:type/:search',
       views: {
-        'menuContent': {
+        'tab-home': {
           templateUrl: 'main/templates/map.html',
           controller: 'MapCtrl'
         }

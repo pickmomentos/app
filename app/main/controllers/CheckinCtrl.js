@@ -102,7 +102,7 @@ angular.module('main')
   };
 
   var loadCheckIn = function () {
-    $log($scope.params);
+    $log.log($scope.params);
     var ConnectionData = checkConnection();
 
     if (ConnectionData.online !== true) {
@@ -110,12 +110,12 @@ angular.module('main')
       showErrorView();
     } else {
       Checkin.all($scope.params).then( function (checkin) {
-        $log(checkin);
+        $log.log(checkin);
         ensureMoreData(checkin.length);
         setCurrentPage($scope.params.page + 1);
         setcheckin(checkin);
         // checkin.getDistance($scope.params.location).then(function (location){
-        //   $log(location);
+        //   $log.log(location);
         // });
         if ($scope.checkin.length === 0) {
           showEmptyView();

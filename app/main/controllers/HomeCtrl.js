@@ -2,11 +2,38 @@
 /* global checkConnection */
 angular.module('main')
 .controller('HomeCtrl',  function ($scope, $rootScope, $state, $translate, $timeout, $ionicLoading, $ionicPlatform,
-  $cordovaSplashscreen, Category, GoogleAnalytics, AdMobService, Config, Toast, $log ) {
+  $cordovaSplashscreen, Category, GoogleAnalytics, AdMobService, Config, Toast, $log, $ionicPopup, $ionicHistory ) {
 
 
   GoogleAnalytics.trackView('Category List Screen');
+  $ionicPlatform.registerBackButtonAction(function (event) {
+    $log.log(event);
+    $log.log($state.current.name);
+    if ($state.current.name === 'app.home') {
+      $ionicPopup.confirm({
+        title: 'Alerta',
+        content: 'Estas seguro de  salir de pick'
+      })
+      .then(function (result) {
+        if (result) {
+          ionic.Platform.exitApp();
+        }
+      });
+    } else if ($state.current.name === 'main') {
+      $ionicPopup.confirm({
+        title: 'Alerta',
+        content: 'Estas seguro de  salir de pick'
+      })
+      .then(function (result) {
+        if (result) {
+          ionic.Platform.exitApp();
+        }
+      });
+    } else {
+      $ionicHistory.goBack();
+    }
 
+  }, 100);
   var isLoadingViewShown = false;
   var isCategoriesViewShown = false;
   var isErrorView = false;
@@ -68,6 +95,9 @@ angular.module('main')
 
   $scope.showLoadingView = function () {
     return isLoadingViewShown;
+  };
+  $scope.gotoScan = function () {
+    $state.go('app.scan');
   };
 
   $scope.showCategories = function () {
