@@ -5,7 +5,9 @@ angular.module('main')
     $ionicModal, $localStorage, User, Toast, Menu, $window, Facebook, $log, $ionicHistory) {
 
     $scope.user = JSON.parse(User.getLoggedUser());
+    $scope.listMenu = [];
     $scope.storage = $localStorage;
+    $scope.pictures = 'main/assets/images/avatar.png';
     var isErrorView = false;
     var isLoadingViewShown = false;
 
@@ -29,37 +31,44 @@ angular.module('main')
     $translate(['loggedOutText']).then(function (translations) {
       trans = translations;
     });
+    $scope.$on('MenuInit', function (event, data) {
+      console.log(data);
+      $scope.onReload();
+    });
+
     $scope.versionador = function () {
-      var version = User.getLocalVariable('version');
-      $log.log(version);
-      if (version === '') {
-        User.version().then( function (response) {
-          console.log("menu");
-          console.log(response);
-          if (response.message === 'OK') {
-            User.setLocalVariable('version', response.data.pick_customer_version_menu_numero);
-            $scope.MenuDinamico(true);
-          }else {
-            $scope.listMenu = [];
-          }
-        });
-      } else {
-        $log.log('si tiene');
-        User.version().then( function (response) {
-          console.log("menu");
-          console.log(response);
-          $log.log(parseInt(version));
-          $log.log(response.data.pick_customer_version_menu_numero);
-          if (parseInt(version) === response.data.pick_customer_version_menu_numero) {
-            $log.log('false');
-            $scope.MenuDinamico(false);
-          } else {
+    $scope.user = JSON.parse(User.getLoggedUser());
+      if ($scope.user !== null) {
+        var version = User.getLocalVariable('version');
+        $scope.getPictures();
+        $log.log(version);
+        if (version === '') {
+          User.version().then( function (response) {
+
             if (response.message === 'OK') {
               User.setLocalVariable('version', response.data.pick_customer_version_menu_numero);
               $scope.MenuDinamico(true);
+            }else {
+              $scope.listMenu = [];
             }
-          }
-        });
+          });
+        } else {
+          $log.log('si tiene');
+          User.version().then( function (response) {
+
+            $log.log(parseInt(version));
+            $log.log(response.data.pick_customer_version_menu_numero);
+            if (parseInt(version) === response.data.pick_customer_version_menu_numero) {
+              $log.log('false');
+              $scope.MenuDinamico(false);
+            } else {
+              if (response.message === 'OK') {
+                User.setLocalVariable('version', response.data.pick_customer_version_menu_numero);
+                $scope.MenuDinamico(true);
+              }
+            }
+          });
+        }
       }
     };
     var showErrorView = function () {
@@ -72,12 +81,11 @@ angular.module('main')
     };
     $scope.onReload = function () {
       $scope.versionador();
-      
+
     };
     $scope.MenuDinamico = function (version) {
       // $scope.isLoading = true;
       Menu.getMenu(version).then(function (data) {
-        console.log("menu");
         $scope.listMenu = data;
         $log.log($scope.listMenu);
       }, function (error) {
@@ -92,12 +100,12 @@ angular.module('main')
       $scope.modal = modal;
     });
 
-    $ionicModal.fromTemplateUrl('main/templates/auth-modal.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function (modal) {
-      $scope.authModal = modal;
-    });
+    // $ionicModal.fromTemplateUrl('main/templates/auth-modal.html', {
+    //   scope: $scope,
+    //   animation: 'slide-in-up'
+    // }).then(function (modal) {
+    //   $scope.authModal = modal;
+    // });
 
     var showLoading = function () {
       $ionicLoading.show({
@@ -174,11 +182,15 @@ angular.module('main')
       $scope.storage.mapType = type;
     };
 
-    $scope.getPicture = function () {
-      if ($scope.user.field_imagen_url.und[0].value) {
-        return $scope.user.field_imagen_url.und[0].value;
+    $scope.getPictures = function () {
+
+      if ($scope.user !== null) {
+        if ($scope.user.field_imagen_url.und[0].value) {
+          $scope.pictures = $scope.user.field_imagen_url.und[0].value;
+        }
+      }else {
+        $scope.pictures = 'main/assets/images/avatar.png';
       }
-      return 'main/assets/images/avatar.png';
     };
     $scope.onLogoutFacebook = function () {
       Facebook.logOut().then( function (close) {
@@ -232,21 +244,4 @@ angular.module('main')
         $log.log(loggged);
       }
     }
-
-    $rootScope.$on('onPhotoUpdated', function () {
-      $scope.user = User.getLoggedUser();
-    });
-
-    $rootScope.$on('onAccountDeleted', function () {
-      $scope.user = User.getLoggedUser();
-    });
-
-    $rootScope.$on('onUserLogged', function () {
-      $scope.user = JSON.parse(User.getLoggedUser());
-      $scope.authModal.hide();
-    });
-
-    $rootScope.$on('onCloseAuthModal', function () {
-      $scope.authModal.hide();
-    });
   });

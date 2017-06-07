@@ -1,8 +1,8 @@
 'use strict';
 angular.module('main')
 .controller('WalkthroughCtrl',
-function ($scope, $state, $localStorage, $ionicPlatform, $cordovaSplashscreen) {
-
+function ($scope, $state, $localStorage, $ionicPlatform, $cordovaSplashscreen, $ionicSideMenuDelegate) {
+  $ionicSideMenuDelegate.canDragContent(false);
   $scope.onSkip = function () {
     $localStorage.walkthrough = true;
     $state.go('main');

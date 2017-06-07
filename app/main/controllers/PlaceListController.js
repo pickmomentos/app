@@ -235,7 +235,7 @@ angular.module('main')
       } else {
         errorMessage = trans.errorLocationMissingText;
       }
-      Dialog.alert(errorMessage);
+      Dialog.alert(errorMessage, "Mensaje");
 
       // showErrorView();
       $scope.$broadcast('scroll.refreshComplete');
@@ -299,7 +299,7 @@ angular.module('main')
       } else {
         errorMessage = trans.errorLocationMissingText;
       }
-      Dialog.alert(errorMessage);
+      Dialog.alert(errorMessage, "Mensaje");
 
       showErrorView();
       $scope.$broadcast('scroll.refreshComplete');
@@ -350,7 +350,7 @@ angular.module('main')
         } else {
           errorMessage = trans.errorLocationMissingText;
         }
-        Dialog.alert(errorMessage);
+        Dialog.alert(errorMessage, "Mensaje");
 
         showErrorView();
       });

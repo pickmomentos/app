@@ -97,6 +97,7 @@ $filter, Dialog, User, Toast, GoogleAnalytics, $log) {
             }
           }
 
+
           if (data.user.field_saw_preference.und[0].value === '1') {
             $state.go('app.home');
           } else {
@@ -107,6 +108,7 @@ $filter, Dialog, User, Toast, GoogleAnalytics, $log) {
           Toast.show(trans.loggedInAsText + ' ' + $scope.login.username);
           // encriptar data  y guardarla en storage
           resetForms();
+          $scope.$emit('MenuInit', 1);
           $rootScope.$broadcast('onUserLogged');
         }, function (error) {
           $log.log(error);

@@ -11,10 +11,7 @@ angular.module('main', [
   'pasvaz.bindonce',
   'ionic.rating',
   'angular.filter'
-])
-.run(function ($ionicPlatform, $rootScope, $state, $localStorage, User,
-  Pushwoosh, GoogleAnalytics, Config, StatusBar, $cordovaGlobalization,
-  $translate, AdMobService, $window, $ionicPopup, $log) {
+]).run(function($ionicPlatform, $rootScope, $state, $localStorage, User, Pushwoosh, GoogleAnalytics, Config, StatusBar, $cordovaGlobalization, $translate, AdMobService, $window, $ionicPopup, $log, $cordovaSplashscreen) {
   //User,
   $rootScope.theme = Config.ENV.theme;
   $rootScope.logo = Config.ENV.SERVER_URL_LOGO;
@@ -23,12 +20,11 @@ angular.module('main', [
     $localStorage.unit = Config.ENV.unit;
   }
 
-
   if (!$localStorage.mapType) {
     $localStorage.mapType = Config.ENV.mapType;
   }
 
-  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
 
     if (toState.name === 'walkthrough' && $localStorage.walkthrough && !toParams.force) {
       $state.go('main');
@@ -36,15 +32,10 @@ angular.module('main', [
     }
   });
 
-
-  $ionicPlatform.ready(function () {
+  $ionicPlatform.ready(function() {
     if (window.Connection) {
       if (navigator.connection.type === Connection.NONE) {
-        $ionicPopup.confirm({
-          title: 'Internet desconectado',
-          content: 'El internet está desconectado en tu dispositivo'
-        })
-        .then(function (result) {
+        $ionicPopup.confirm({title: 'Internet desconectado', content: 'El internet está desconectado en tu dispositivo'}).then(function(result) {
           if (!result) {
             ionic.Platform.exitApp();
           }
@@ -53,7 +44,7 @@ angular.module('main', [
     }
     if ($window.localStorage.getItem('user') !== null) {
       // var validateUser = JSON.parse($window.localStorage.getItem('user'));
-        $state.go('app.home');
+      $state.go('app.home');
     }
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -64,69 +55,67 @@ angular.module('main', [
       $translate.use($localStorage.lang);
     } else {
       if (typeof navigator.globalization !== 'undefined') {
-        $cordovaGlobalization.getPreferredLanguage().then(function (language) {
+        $cordovaGlobalization.getPreferredLanguage().then(function(language) {
           $translate.use((language.value).split('-')[0]);
         }, null);
       }
     }
 
-    AdMobService.prepareInterstitial(
-      Config.ENV.admob.interstitialForAndroid,
-      Config.ENV.admob.interstitialForiOS);
+    AdMobService.prepareInterstitial(Config.ENV.admob.interstitialForAndroid, Config.ENV.admob.interstitialForiOS);
 
     StatusBar.init(Config.ENV.statusBarColor);
     GoogleAnalytics.init(Config.ENV.gaTrackingId);
 
     Pushwoosh.init(Config.ENV.push.appId, Config.ENV.push.googleProjectNumber);
-    Pushwoosh.registerDevice()
-      .then(function (result) {
-        $log.log('PushWoosh response on registerDevice: ' + result);
-      });
-  });
-})
-.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider,
-  $provide, $translateProvider, $logProvider, $compileProvider) {
-    var DEBUG = true;
-
-    // Deshabilita los logs en producción
-    $logProvider.debugEnabled(DEBUG);
-
-    $compileProvider.debugInfoEnabled(DEBUG);
-    $provide.decorator('$log', function ($delegate) {
-        //Original methods
-        var origInfo = $delegate.info;
-        var origLog = $delegate.log;
-
-        //Override the default behavior
-        $delegate.info = function () {
-
-            if ($logProvider.debugEnabled())
-                origInfo.apply(null, arguments)
-        };
-
-        //Override the default behavior
-        $delegate.log = function () {
-
-            if ($logProvider.debugEnabled())
-                origLog.apply(null, arguments)
-        };
-
-        return $delegate;
+    Pushwoosh.registerDevice().then(function(result) {
+      $log.log('PushWoosh response on registerDevice: ' + result);
     });
+    if (navigator && navigator.splashscreen) {
+      $cordovaSplashscreen.hide();
+    }
+  });
+}).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $provide, $translateProvider, $logProvider, $compileProvider) {
+  var DEBUG = true;
 
-    // Disables javascript scrolling (fix for android)
-    //$ionicConfigProvider.scrolling.jsScrolling(false);
-    Drupal.settings.site_path = "http://dev.pick.com.ec/";
-    //Drupal.settings.site_path = "http://devel.local/pick-backend";
-    console.log(Drupal.settings.site_path);
-    // Set the Service Resource endpoint path.
-    Drupal.settings.endpoint = "rest";
-    // Set to true to enable local storage caching for entities.
-    Drupal.settings.cache.entity.enabled = true;
-    Drupal.settings.debug=true;
-    // Number of seconds before cached copy expires. Set to 0 to cache forever, set
-    // to 60 for one minute, etc.
-    Drupal.settings.cache.entity.expiration = 60*60*24;
+  // Deshabilita los logs en producción
+  $logProvider.debugEnabled(DEBUG);
+
+  $compileProvider.debugInfoEnabled(DEBUG);
+  $provide.decorator('$log', function($delegate) {
+    //Original methods
+    var origInfo = $delegate.info;
+    var origLog = $delegate.log;
+
+    //Override the default behavior
+    $delegate.info = function() {
+
+      if ($logProvider.debugEnabled())
+        origInfo.apply(null, arguments)
+    };
+
+    //Override the default behavior
+    $delegate.log = function() {
+
+      if ($logProvider.debugEnabled())
+        origLog.apply(null, arguments)
+    };
+
+    return $delegate;
+  });
+
+  // Disables javascript scrolling (fix for android)
+  //$ionicConfigProvider.scrolling.jsScrolling(false);
+  Drupal.settings.site_path = "http://dev.pick.com.ec/";
+  //Drupal.settings.site_path = "http://devel.local/pick-backend";
+  console.log(Drupal.settings.site_path);
+  // Set the Service Resource endpoint path.
+  Drupal.settings.endpoint = "rest";
+  // Set to true to enable local storage caching for entities.
+  Drupal.settings.cache.entity.enabled = true;
+  Drupal.settings.debug = true;
+  // Number of seconds before cached copy expires. Set to 0 to cache forever, set
+  // to 60 for one minute, etc.
+  Drupal.settings.cache.entity.expiration = 60 * 60 * 24;
   $ionicConfigProvider.tabs.position('bottom');
   $translateProvider.translations('en', {
     appTitle: 'Pick',
@@ -341,8 +330,7 @@ angular.module('main', [
     authModalText: 'Necesitamos saber más de ti. Inicia sesión ó regístrate.',
     loggedInAsText: 'Ha iniciado sesión cómo',
     loggedOutText: 'Se ha cerrado su sesión correctamente',
-    emailFacebookTakenText: 'El correo registrado en Facebook ya está siendo ' +
-    'utilizado con otra cuenta',
+    emailFacebookTakenText: 'El correo registrado en Facebook ya está siendo ' + 'utilizado con otra cuenta',
     chooseLanguageText: 'Lenguaje',
     spanishText: 'Español',
     englishText: 'Inglés',
@@ -386,152 +374,150 @@ angular.module('main', [
   // ROUTING with ui.router
   $urlRouterProvider.otherwise('/walkthrough');
   $stateProvider
-    // this state is placed in the <ion-nav-view> in the index.html
+  // this state is placed in the <ion-nav-view> in the index.html
     .state('app', {
-      url: '/app?clear',
-      abstract: true,
-      templateUrl: 'main/templates/tabs.html',
-    })
-    .state('walkthrough', {
-      url: '/walkthrough?force',
-      templateUrl: 'main/templates/walkthrough.html',
-      controller: 'WalkthroughCtrl',
-    })
-    .state('main', {
-      url: '/main?force',
-      templateUrl: 'main/templates/main.html',
-    })
-    .state('app.home', {
-      url: '/home',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/home.html',
-         controller: 'HomeCtrl'
-        }
+    url: '/app?clear',
+    abstract: true,
+    templateUrl: 'main/templates/tabs.html'
+  }).state('walkthrough', {
+    url: '/walkthrough?force',
+    templateUrl: 'main/templates/walkthrough.html',
+    controller: 'WalkthroughCtrl'
+  }).state('main', {
+    url: '/main?force',
+    templateUrl: 'main/templates/main.html'
+  }).state('app.home', {
+    url: '/home',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/home.html',
+        controller: 'HomeCtrl'
       }
-    })
-    .state('app.scan', {
-      url: '/scan',
-      views: {
-        'tab-compra': {
-          templateUrl: 'main/templates/scanner.html',
-          controller: 'scanController'
-        }
+    }
+  }).state('app.scan', {
+    url: '/scan',
+    views: {
+      'tab-compra': {
+        templateUrl: 'main/templates/scanner.html',
+        controller: 'scanController'
       }
-    })
-    .state('app.my-retos', {
-      url: '/my-retos',
-      views: {
-        'tab-retos': {
-          templateUrl: 'main/templates/my-retos.html',
-        }
+    }
+  }).state('app.scan-gift', {
+    url: '/scan-gift',
+    params: {
+      sid: null
+    },
+    views: {
+      'tab-retos': {
+        templateUrl: 'main/templates/scan-gift.html',
+        controller: 'scanController'
       }
-    })
+    }
+  }).state('app.my-retos', {
+    url: '/my-retos',
+    views: {
+      'tab-retos': {
+        templateUrl: 'main/templates/my-retos.html',
+        controller: 'MyChallengesController'
 
-    .state('app.profile', {
-      url: '/profile',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/profile.html',
-          controller: 'ProfileCtrl'
-        }
       }
-    })
+    }
+  }).state('app.profile', {
+    url: '/profile',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/profile.html',
+        controller: 'ProfileCtrl'
+      }
+    }
+  }).state('app.preferences', {
+    url: '/preferences',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/preferences.html',
+        controller: 'PreferencesCtrl'
+      }
+    }
 
-    .state('app.preferences', {
-      url: '/preferences',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/preferences.html',
-          controller: 'PreferencesCtrl'
-        }
+  }).state('app.search', {
+    url: '/search',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/search.html',
+        controller: 'SearchCtrl'
       }
+    }
+  }).state('app.checkin', {
+    url: '/checkin',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/checkin.html',
+        controller: 'checkinCtrl'
+      }
+    }
 
-    })
-
-    .state('app.search', {
-      url: '/search',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/search.html',
-          controller: 'SearchCtrl'
-        }
+  }).state('app.favorites', {
+    url: '/favorites',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/favorites.html',
+        controller: 'FavoriteListCtrl'
       }
-    })
-    .state('app.checkin', {
-      url: '/checkin',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/checkin.html',
-          controller: 'checkinCtrl'
-        }
+    }
+  }).state('app.places', {
+    url: '/places/:categoryId/:categoryTitle/:type',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/places.html',
+        controller: 'PlaceListCtrl'
       }
-
-    })
-    .state('app.favorites', {
-      url: '/favorites',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/favorites.html',
-          controller: 'FavoriteListCtrl'
-        }
+    }
+  }).state('app.place', {
+    url: '/place/',
+    params: {
+      placeId: null,
+      obj: null
+    },
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/place.html',
+        controller: 'PlaceDetailCtrl'
       }
-    })
-    .state('app.places', {
-      url: '/places/:categoryId/:categoryTitle/:type',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/places.html',
-          controller: 'PlaceListCtrl'
-        }
+    }
+  }).state('app.challenges', {
+    url: '/place/retos',
+    params: {
+      placeId: null
+    },
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/retos.html',
+        controller: 'ChallengesCtrl'
       }
-    })
-    .state('app.place', {
-      url: '/place/',
-      params: { placeId: null, obj: null },
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/place.html',
-          controller: 'PlaceDetailCtrl'
-        }
+    }
+  }).state('app.reviews', {
+    url: '/place/:placeId/reviews',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/reviews.html',
+        controller: 'ReviewListCtrl'
       }
-    })
-    .state('app.challenges', {
-      url: '/place/retos',
-      params: { placeId: null},
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/retos.html',
-          controller: 'ChallengesCtrl'
-        }
+    }
+  }).state('app.map2', {
+    url: '/map2/:search/:type',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/map.html',
+        controller: 'MapCtrl'
       }
-    })
-    .state('app.reviews', {
-      url: '/place/:placeId/reviews',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/reviews.html',
-          controller: 'ReviewListCtrl'
-        }
+    }
+  }).state('app.map', {
+    url: '/map/:categoryId/:categoryTitle/:type/:search',
+    views: {
+      'tab-home': {
+        templateUrl: 'main/templates/map.html',
+        controller: 'MapCtrl'
       }
-    })
-
-    .state('app.map2', {
-      url: '/map2/:search/:type',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/map.html',
-          controller: 'MapCtrl'
-        }
-      }
-    })
-    .state('app.map', {
-      url: '/map/:categoryId/:categoryTitle/:type/:search',
-      views: {
-        'tab-home': {
-          templateUrl: 'main/templates/map.html',
-          controller: 'MapCtrl'
-        }
-      }
-    });
+    }
+  });
 });

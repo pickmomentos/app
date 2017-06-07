@@ -1,0 +1,40 @@
+<ion-modal-view  style="    margin: 20px;
+    width: 90%;
+    border-radius: 25px;
+    border: 6px solid #ccc;
+    min-height: 400px;">
+  <ion-header-bar>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeRetosModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+    <h1 class="title">{{challenges.reto}}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-item class="sin-espacio">
+      <p class="text-center padding">
+        <i class="icon ion-trophy text-center energized" style=" text-shadow: 2px 2px black; font-size:3em;"></i>
+      </p>
+      <p class="text-premio">
+        PREMIO
+      </p>
+      <p class="text-center"> {{challenges.premio}}</p>
+      <p>
+        <b>Desde:</b>
+      </p>
+      <small>{{challenges.fecha_fin }}</small>
+      <p>
+        <b>Hasta:</b>
+      </p>
+      <small>{{challenges.fecha_fin }}</small>
+    </ion-item>
+
+    <div class="padding">
+      <button type="button" class="button button-block button-energized" ng-click="gotoScanGift(challenges.s_id)">
+        <span >Reclamar premio</span>
+      </button>
+    </div>
+
+  </ion-content>
+</ion-modal-view>

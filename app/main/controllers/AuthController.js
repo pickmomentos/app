@@ -2,30 +2,12 @@
 angular.module('main')
 .controller('AuthCtrl',
   function ($scope, $state, $ionicLoading, $ionicModal, $translate, $rootScope,
-    $q, Facebook, Dialog, User, Toast, GoogleAnalytics, $log, $ionicHistory, $ionicPlatform, AdMobService, $cordovaSplashscreen) {
+    $q, Facebook, Dialog, User, Toast, GoogleAnalytics, $log, $ionicHistory, $ionicPlatform, AdMobService, $cordovaSplashscreen, $ionicSideMenuDelegate) {
 
     GoogleAnalytics.trackView('Auth Screen');
-    // $ionicPlatform.registerBackButtonAction(function (event) {
-    //   $log.log(event);
-    //   $log.log($state.current.name);
-    //   if ($state.current.name === 'main') {
-    //     $ionicPopup.confirm({
-    //       title: 'Alerta',
-    //       content: 'Estas seguro de  salir de pick'
-    //     })
-    //     .then(function (result) {
-    //       if (result) {
-    //         ionic.Platform.exitApp();
-    //       }
-    //     });
-    //   }
-    //   else {
-    //     $state.go('app.home');
-    //   }
-    // }, 100);
 
     $scope.Facebooklogin = {};
-
+    $ionicSideMenuDelegate.canDragContent(false);
     var showLoading = function () {
 
       $ionicLoading.show({
@@ -179,6 +161,7 @@ angular.module('main')
     $scope.$on('$ionicView.loaded', function () {
       $ionicPlatform.ready(function () {
         if (navigator && navigator.splashscreen) {
+          console.log('entro');
           $cordovaSplashscreen.hide();
         }
       });

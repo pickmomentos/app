@@ -181,7 +181,13 @@ angular.module('main')
     $scope.checkin.estado = 0;
     $scope.checkin.comment = '';
   };
-
+  // Modal de repeticion de retos
+  $ionicModal.fromTemplateUrl('main/templates/procesoReto-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function (modal) {
+    $scope.procesoRetosModal = modal;
+  });
 
    // MODAL PARA MOSTRAR el rating
   $ionicModal.fromTemplateUrl('main/templates/star-modal.html', {
@@ -260,7 +266,23 @@ angular.module('main')
   $scope.closePhotosModal = function () {
     $scope.photosModal.hide();
   };
+  $scope.openProcesoRetoModal = function (checkin) {
+    $scope.retoText = trans.successSubmitCheckinText;
+    $scope.procesoReto = checkin.retos[0];
 
+    angular.forEach($scope.procesoReto.ttx, function (value, key) {
+      console.log($scope.procesoReto.ttx[key]);
+      if ($scope.procesoReto.ttx[key].suma >= $scope.procesoReto.ttx[key].repeticiones) {
+        $scope.procesoReto.ttx[key].isPendiente = true;
+      }
+    });
+
+    $scope.procesoRetosModal.show();
+  }
+
+  $scope.closeProcesoRetoModal = function () {
+    $scope.procesoRetosModal.hide();
+  };
   $scope.closeStarModal = function () {
     $scope.starModal.hide();
   };
@@ -335,7 +357,8 @@ angular.module('main')
       $log.log($scope.checkin.fid);
       Checkin.checkin($scope.user.uid, $stateParams.placeId, $scope.checkin.comment, $scope.checkin.estado, $scope.checkin.fid).then(function (checkin) {
         $log.log(checkin);
-        Toast.show(trans.successSubmitCheckinText);
+
+        $scope.openProcesoRetoModal(checkin);
         resetCheckinData();
         isSubmittingCheckin = false;
         $scope.closeCheckModal();

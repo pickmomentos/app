@@ -1,12 +1,14 @@
 'use strict';
 /* global checkConnection */
 angular.module('main')
-.controller('ChallengesCtrl', function ($scope, $ionicLoading, $state,
+.controller('MyChallengesController', function ($scope, $ionicLoading, $state,
   $translate, Toast, GoogleAnalytics, Place, User, Retos, $stateParams, $ionicModal, $ionicPopup, $log) {
 
   GoogleAnalytics.trackView('Favorite List Screen');
 
-  $scope.retos = [];
+  $scope.retosPe = [];
+  $scope.retosCo = [];
+  $scope.retosCa = [];
   $scope.maxRating = 5;
   $scope.params = {
     page: 0
@@ -18,7 +20,7 @@ angular.module('main')
   var isLoadingViewShown = false;
   var isPlacesViewShown = false;
   var isErrorViewShown = false;
-  var isEmptyViewShown = false;
+  // var isEmptyViewShown = false;
 
   var isMoreData = false;
   $scope.gotoDetail = function (id, object) {
@@ -29,14 +31,21 @@ angular.module('main')
       location: 'replace'
     });
   };
+  $scope.gotoScanGift = function (sid) {
+    console.log(sid);
+    $state.go('app.scan-gift', {
+      'sid': sid,
+    });
+    $scope.closeRetosModal();
 
+  };
   var showLoading = function () {
 
     isLoadingViewShown = true;
 
     isPlacesViewShown = false;
     isErrorViewShown = false;
-    isEmptyViewShown = false;
+    // isEmptyViewShown = false;
 
     $ionicLoading.show({
       templateUrl: 'main/templates/loading.html',
@@ -54,7 +63,7 @@ angular.module('main')
 
     isLoadingViewShown = false;
     isErrorViewShown = false;
-    isEmptyViewShown = false;
+    // isEmptyViewShown = false;
 
     $ionicLoading.hide();
     $scope.$broadcast('scroll.refreshComplete');
@@ -67,21 +76,21 @@ angular.module('main')
 
     isPlacesViewShown = false;
     isLoadingViewShown = false;
-    isEmptyViewShown = false;
+    // isEmptyViewShown = false;
 
     $ionicLoading.hide();
   };
 
-  var showEmptyView = function () {
-
-    isEmptyViewShown = true;
-
-    isErrorViewShown = false;
-    isPlacesViewShown = false;
-    isLoadingViewShown = false;
-
-    $ionicLoading.hide();
-  };
+  // var showEmptyView = function () {
+  //
+  //   isEmptyViewShown = true;
+  //
+  //   isErrorViewShown = false;
+  //   isPlacesViewShown = false;
+  //   isLoadingViewShown = false;
+  //
+  //   $ionicLoading.hide();
+  // };
 
     // FUNCIÓN PARA CARGAR RETEOS
   $scope.gotoRetos = function (id) {
@@ -90,37 +99,7 @@ angular.module('main')
   $scope.setChallenges = function (retos) {
     $scope.retos = retos;
   };
-  $scope.loadChallanges = function () {
-    var ConnectionData = checkConnection();
 
-    if (ConnectionData.online !== true) {
-      Toast.show('Internet desconectado');
-      showErrorView();
-    } else {
-      Retos.getChallangesById($stateParams.placeId).then( function (retos) {
-        $log.log(retos);
-        $scope.setChallenges(retos);
-        if ($scope.retos.length === 0) {
-          showEmptyView();
-        } else {
-          Retos.getChallangesProgress($scope.user.uid).then( function (response) {
-            angular.forEach($scope.retos, function (value1, key1) {
-              angular.forEach(response, function (value2, key2) {
-                $log.log(key2);
-                if (value1.id === value2.r_id) {
-                  $scope.retos[key1].storeNumber = 1;
-                }
-              });
-            });
-            showPlaces();
-          });
-
-        }
-      }, function () {
-        showErrorView();
-      });
-    }
-  };
   $scope.showConfirm = function (rid) {
     var confirmPopup = $ionicPopup.confirm({
       title: 'Aceptar reto',
@@ -152,7 +131,7 @@ angular.module('main')
     });
   };
 
-  $ionicModal.fromTemplateUrl('main/templates/retos-modal.html', {
+  $ionicModal.fromTemplateUrl('main/templates/retos-progressmodal.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -171,7 +150,7 @@ angular.module('main')
     $scope.retosModal.hide();
   };
 
-  $scope.loadChallangesByUser = function () {
+  $scope.loadChallangesByUserProgress = function () {
     var ConnectionData = checkConnection();
 
     if (ConnectionData.online !== true) {
@@ -181,7 +160,7 @@ angular.module('main')
       console.log($scope.user.uid);
       Retos.getChallangesProgress($scope.user.uid).then( function (retos) {
         $log.log(retos);
-        $scope.setChallenges(retos);
+        $scope.retosPe = retos;
         showPlaces();
 
       }, function () {
@@ -189,10 +168,42 @@ angular.module('main')
       });
     }
   };
+  $scope.loadChallangesByUserComplete = function () {
+    var ConnectionData = checkConnection();
 
-  $scope.onLoadMore = function () {
-    $scope.loadChallanges();
+    if (ConnectionData.online !== true) {
+      Toast.show('Internet desconectado');
+      showErrorView();
+    } else {
+      console.log($scope.user.uid);
+      Retos.getChallangesComplete($scope.user.uid).then( function (retos) {
+        $log.log(retos);
+        $scope.retosCo = retos;
+        showPlaces();
+
+      }, function () {
+        showErrorView();
+      });
+    }
   };
+  $scope.loadChallangesByUserCaducado = function () {
+    var ConnectionData = checkConnection();
+
+    if (ConnectionData.online !== true) {
+      Toast.show('Internet desconectado');
+      showErrorView();
+    } else {
+      console.log($scope.user.uid);
+      Retos.getChallangesCaducado($scope.user.uid).then( function (retos) {
+        $log.log(retos);
+        $scope.retosCa = retos;
+        showPlaces();
+      }, function () {
+        showErrorView();
+      });
+    }
+  };
+
 
   $scope.moreDataCanBeLoaded = function () {
     return isMoreData;
@@ -210,22 +221,28 @@ angular.module('main')
     return isErrorViewShown;
   };
 
-  $scope.showEmptyView = function () {
-    return isEmptyViewShown;
-  };
-
   $scope.onReload = function () {
-    $scope.retos = [];
-    $scope.params.page = 0;
+    $scope.retosPe = [];
+    $scope.retosCo = [];
+    $scope.retosCa = [];
     showLoading();
-    $scope.loadChallanges();
+    $scope.loadChallangesByUserProgress();
+    $scope.loadChallangesByUserComplete();
+    $scope.loadChallangesByUserCaducado();
   };
 
   $scope.$on('$ionicView.enter', function (scopes, states) {
-
-    if (states.direction === 'forward') {
+    console.log(states);
+    if (states.direction === 'swap') {
       showLoading();
-      $scope.loadChallanges();
+      $scope.loadChallangesByUserProgress();
+      $scope.loadChallangesByUserComplete();
+      $scope.loadChallangesByUserCaducado();
     }
   });
+}).filter('split', function () {
+  return function (input, splitChar, splitIndex) {
+    // do some bounds checking here to ensure it has that index
+    return input.split(splitChar)[splitIndex];
+  };
 });

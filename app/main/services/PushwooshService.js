@@ -21,7 +21,7 @@ angular.module('main')
           canPush = true;
         }
         else {
-          $log.warm('[' + TAG + '] Invalid App ID');
+          $log.log('[' + TAG + '] Invalid App ID');
         }
 
       }
@@ -34,11 +34,11 @@ angular.module('main')
           canPush = true;
         }
         else {
-          $log.warm('[' + TAG + '] Invalid Google Project Number/App ID');
+          $log.log('[' + TAG + '] Invalid Google Project Number/App ID');
         }
       }
       else {
-        $log.warm('[' + TAG + '] Unsupported platform');
+        $log.log('[' + TAG + '] Unsupported platform');
       }
 
       // Initialize the plugin

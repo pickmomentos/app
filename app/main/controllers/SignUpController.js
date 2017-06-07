@@ -81,7 +81,7 @@ angular.module('main')
               pass = '<ion-item class="space-none">' + $scope.msgError.form_errors.pass + '</ion-item>';
             }
 
-            Toast.show(name + mail + pass);
+            Toast.showPop(name + mail + pass);
           });
         }
 

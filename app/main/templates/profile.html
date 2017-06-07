@@ -1,4 +1,4 @@
-<ion-view class="assertive-bg profile">
+<ion-view class=" profile">
   <ion-nav-title>{{ "profileTitle" | translate }}</ion-nav-title>
   <ion-nav-buttons side="right">
     <button class="button button-icon"
@@ -6,16 +6,23 @@
       <i class="icon ion-edit"></i>
     </button>
   </ion-nav-buttons>
-  <ion-content class="padding">
-    <div class="list text-center">
+  <ion-content class="no-padding">
+    <div class="list " style=" background: rgba(195, 82, 10, 0.5);  box-shadow: inset 0 -10px 10px -10px #000000;">
       <img class="img-profile" width="96" height="96"
       ng-click="onImageTapped()" actual-src="{{ user.picture.url }}"
-      ng-src="main/assets/images/avatar.png"><br>
-      <button class="button button-small button-stable"
+      ng-src="main/assets/images/avatar.png">
+      <button class="button button-small button-stable" style="    margin: 0;
+    border-radius: 20px;
+    position: absolute;
+    left: 46%;
+    top: 40%;"
         ng-click="onImageTapped()">
-        {{ "changePhotoButtonText" | translate }}
+        <i class="icon ion-camera {{ theme }}">
+        </i>
       </button>
+      <img ng-src="main/assets/images/ridebg.png" style="bottom:0px;width: 1000px;" src="main/assets/images/ridebg.png">
     </div>
+
       <div class="list list-inset">
       <div class="item item-divider">
         Informacion Personal
@@ -30,11 +37,11 @@
       </div>
       <div class="item" ng-hide="user.field_nombres == '' || user.field_nombres.length == 0">
         <h2>Nombres:</h2>
-        <p class="sin-espacio">{{user.field_nombres}}</p>
+        <p class="sin-espacio" ng-repeat="nombre in user.field_nombres">{{nombre[0].value}}</p>
       </div>
       <div class="item" ng-hide="user.field_apellidos == '' || user.field_apellidos.length == 0">
         <h2>Apellidos:</h2>
-        <p class="sin-espacio">{{user.field_apellidos}}</p>
+        <p class="sin-espacio" ng-repeat="apellido in user.field_apellidos">{{apellido[0].value}}</p>
       </div>
       <div class="item" ng-hide="user.field_fecha_nacimiento == '' || user.field_fecha_nacimiento.length == 0">
         <h2>Nacimiento:</h2>
@@ -42,15 +49,12 @@
       </div>
       <div class="item" ng-hide="user.field_genero == '' || user.field_genero.length == 0">
         <h2>Sexo:</h2>
-        <p class="sin-espacio"><i ng-class="user.field_genero === 'Hombre' ? 'icon ion-male' : 'icon ion-female'"></i> {{user.field_genero}}</p>
+        <p class="sin-espacio" ng-repeat="genero in user.field_genero">
+          <i ng-class="genero[0].value === '1' ? 'icon ion-male' : 'icon ion-female'"></i>
+        </p>
       </div>
 
-      <div class="padding">
-        <button class="button button-assertive button-clear button-light"
-          ng-click="onDeleteAccount()">
-          {{ "deleteAccountText" | translate }}
-        </button>
-      </div>
+
 
     </div>
   </ion-content>

@@ -1,0 +1,39 @@
+<ion-modal-view class="auth-modal" style="    margin: 20px;
+    width: 90%;
+    border-radius: 25px;
+    border: 6px solid #ccc;
+    min-height: 400px;">
+  <ion-header-bar>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeProcesoRetoModal()">
+        {{ "closeText" | translate }}
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content scroll="true">
+    <p class="text-center padding">
+      {{retoText}}
+    </p>
+    <ion-item class="sin-espacio" ng.if="procesoReto">
+
+      <div class="text-center ">
+        <p>
+          RETO
+        </p>
+        <p>{{procesoReto.estado}}</p>
+        <i class="icon icon-large " ng-class="procesoReto.estado == 'COMPLETADO' ? 'ion-trophy energized' : 'ion-trophy'"></i>
+        <p class="dark info">
+        </p>
+      </div>
+      <p ng-repeat="reto in procesoReto.ttx" >
+        <i class="icon" ng-class="reto.isPendiente ? 'ion-ios-checkmark balanced' : 'ion-ios-checkmark-outline  '"></i>
+        {{reto.suma}}/{{reto.repeticiones}}
+        {{reto.nombre}}
+      </p>
+    </ion-item>
+    <div class="padding">
+      <button type="button" class="button button-block button-energized" ng-disabled="procesoReto.estado == 'PENDIENTE' ">
+        <span >Reclamar premio</span>
+      </button>
+    </div>  </ion-content>
+</ion-modal-view>

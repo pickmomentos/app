@@ -1,20 +1,56 @@
-<ion-view view-title="{{ 'appTitle' | translate }}" hide-back-button="true">
+<ion-view view-title="Mis Retos" >
   <ion-content>
     <div class="padding center" ng-if="showErrorView()"
-      ng-include="'main/templates/error-view.html'"></div>
-    <ion-refresher
-    pulling-text="{{ 'loadingText' | translate }}"
-    on-refresh="onReload()"></ion-refresher>
-    <div ng-if="showCategories()" ng-repeat="category in categories">
-	    <div class="row row-category">
-	      <div class="col">
-	        <a href="#/app/places/{{ category.id }}/{{category.title}}">
-	  	      <div class="item-category animated fadeIn" style="background-image:-webkit-linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('{{ category.image_url }}');background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('{{ category.image_url }}')">
-	  	        <h3 class="title">{{ category.title }}</h3>
-	  	      </div>
-        	</a>
-	      </div>
-	    </div>
-	  </div>
-  </ion-content>
+    ng-include="'main/templates/error-view.html'">
+  </div>
+
+
+<ion-refresher
+pulling-text="{{ 'loadingText' | translate }}"
+on-refresh="onReload()"></ion-refresher>
+
+<i class="icon ion-trophy trofeo-bg"></i>
+<div class="item item-divider"  >
+  Retos Completado
+</div>
+<ion-list  >
+  <ion-item ng-repeat="r in retosCo  " class="item-icon-left item-button-right " ng-class="r.storeNumber  ? 'retos-block' : ''">
+    <i class="icon ion-trophy energized" style=" text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.75);"></i>
+    <p>{{r.reto}}</p>
+    <div class="buttons">
+      <button class="button button-energized text-shadow  " ng-click="openRetosModal(r);" >
+        Ver Reto
+      </button>
+    </div>
+  </ion-item>
+</ion-list>
+<div class="item item-divider"  >
+Retos en progreso
+</div>
+<ion-list >
+  <ion-item ng-repeat="r in retosPe  " class="item-icon-left item-button-right " ng-class="r.storeNumber  ? 'retos-block' : ''">
+    <i class="icon ion-trophy positive" style=" text-shadow: 2px 2px 2px rgba(228, 170, 22, 0.75);"></i>
+    <p>{{r.reto}}</p>
+    <div class="buttons">
+      <button class="button button-energized text-shadow" ng-click="openRetosModal(r);" >
+        Ver Reto
+      </button>
+    </div>
+  </ion-item>
+</ion-list>
+<div class="item item-divider"  >
+Retos Caducado
+</div>
+<ion-list >
+  <ion-item ng-repeat="r in retosCa  " class="item-icon-left item-button-right " ng-class="r.storeNumber  ? 'retos-block' : ''">
+    <i class="icon ion-trophy positive" style=" text-shadow: 2px 2px 2px rgba(228, 170, 22, 0.75);"></i>
+    <p>{{r.reto}}</p>
+    <div class="buttons">
+      <button class="button button-energized text-shadow " ng-click="openRetosModal(r);" >
+        Ver Reto
+      </button>
+    </div>
+  </ion-item>
+</ion-list>
+</ion-content>
 </ion-view>

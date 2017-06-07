@@ -24,10 +24,10 @@
         <div class="place-bg animated fadeIn"></div>
       </div>
       <ion-slide-box>
-					<ion-slide ng-repeat="imagen in images">
+					<ion-slide ng-repeat="image in images track by $index">
             <div class="place-bg animated fadeIn"
             ng-click="openPhotosModal($index)"
-            style="background-image: url('{{ imagen }}')"></div>
+            style="background-image: url('{{ image }}')"></div>
 					</ion-slide>
 			</ion-slide-box>
       <div class="button-bar">

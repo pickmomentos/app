@@ -4,7 +4,7 @@
       <div class="padding center" ng-if="listMenu.length === undefined "
       ng-include="'main/templates/error-view.html'"></div>
 
-      <div style="background:  url({{ getPicture() }});
+      <div style="background:  url({{ pictures }});
       background-size: cover;
       filter: blur(4px);
       height: 130px;">
@@ -14,7 +14,7 @@
       <img class="img-profile" width="70" height="70" style="    position: absolute;
       top: 0;
       left: 4%;    z-index: 2;"
-      actual-src="{{ getPicture() }}" ng-src="main/assets/images/avatar.png">
+      actual-src="{{pictures}}" >
       <span style="    background: white;
       border-radius: 2px;
       -webkit-border-radius: 2px;

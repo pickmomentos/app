@@ -9,16 +9,20 @@
         {{ "closeText" | translate }}
       </button>
     </div>
-    <h1 class="title">{{ "challengesModalTitle" | translate }}</h1>
+    <h1 class="title">{{challenges.titulo}}</h1>
   </ion-header-bar>
   <ion-content>
     <ion-item class="sin-espacio">
       <p class="text-center padding">
-        <i class="icon ion-trophy text-center positive" style="font-size:3em;"></i>
+        <i class="icon ion-trophy text-center positive" style="font-size:3em; text-shadow: 2px 2px black;"></i>
       </p>
-      <small>{{challenges.titulo}}</small>
+      <p class="text-premio">
+        PREMIO
+      </p>
+      <p class="text-center"> {{challenges.premio}}</p>
+      <!-- <small>{{challenges.titulo}}</small> -->
       <p>
-        <b>Descripción:</b>
+        <b>Pasos:</b>
       </p>
       <small>{{challenges.descripcion}}</small>
       <p>
